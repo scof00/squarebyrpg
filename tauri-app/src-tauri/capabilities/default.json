@@ -1,10 +1,34 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
-  "description": "Capability for the main window",
+  "description": "enables the default permissions",
   "windows": ["main"],
   "permissions": [
     "core:default",
-    "opener:default"
+    "fs:default",
+    "fs:allow-remove",
+    "fs:allow-create",
+    "fs:allow-exists",
+    "fs:allow-read-dir",
+    "fs:allow-read-file",
+    "fs:allow-read-text-file",
+    "fs:allow-write-text-file",
+    "fs:allow-write-file",
+    {
+      "identifier": "fs:allow-applocaldata-write",
+      "allow": [{ "path": "$APPLOCALDATA/*.json" }]
+    },
+    {
+      "identifier": "fs:allow-applocaldata-read",
+      "allow": [{ "path": "$APPLOCALDATA/*.json" }]
+    },
+    {
+      "identifier": "fs:allow-appdata-read",
+      "allow": [{ "path": "$APPDATA/*.json" }]
+    },
+    {
+      "identifier": "fs:allow-appdata-write",
+      "allow": [{ "path": "$APPDATA/*.json" }]
+    }
   ]
 }
