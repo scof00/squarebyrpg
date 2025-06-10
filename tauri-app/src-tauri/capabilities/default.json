@@ -5,30 +5,17 @@
   "windows": ["main"],
   "permissions": [
     "core:default",
-    "fs:default",
-    "fs:allow-remove",
-    "fs:allow-create",
-    "fs:allow-exists",
-    "fs:allow-read-dir",
-    "fs:allow-read-file",
-    "fs:allow-read-text-file",
     "fs:allow-write-text-file",
-    "fs:allow-write-file",
+    "fs:allow-read-text-file",
+    "fs:allow-applocaldata-write",
+    "fs:allow-applocaldata-read",
     {
-      "identifier": "fs:allow-applocaldata-write",
-      "allow": [{ "path": "$APPLOCALDATA/*.json" }]
-    },
-    {
-      "identifier": "fs:allow-applocaldata-read",
-      "allow": [{ "path": "$APPLOCALDATA/*.json" }]
-    },
-    {
-      "identifier": "fs:allow-appdata-read",
-      "allow": [{ "path": "$APPDATA/*.json" }]
-    },
-    {
-      "identifier": "fs:allow-appdata-write",
-      "allow": [{ "path": "$APPDATA/*.json" }]
+      "identifier": "fs:scope",
+      "allow": [
+        {
+          "path": "$APPLOCALDATA/*"
+        }
+      ]
     }
   ]
 }
