@@ -3,6 +3,8 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { initGameData } from './Utils/initFiles';
 import DevPanel from './Components/DevPanel';
+import { Routes, Route } from 'react-router-dom';
+import { Home } from './components/Home';
 
 export function App() {
   React.useEffect(() => {
@@ -10,13 +12,9 @@ export function App() {
   }, []);
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Squareby RPG Admin</h1>
-      <DevPanel />
-    </div>
+    <Routes>
+      <Route path='/' element= {<Home />}/>
+      <Route path='/devPanel' element ={<DevPanel />}/>
+    </Routes>
   );
 }
-
-const container = document.getElementById('root');
-const root = createRoot(container);
-root.render(<App />);
