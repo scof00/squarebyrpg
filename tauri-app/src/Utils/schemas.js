@@ -20,6 +20,48 @@ export const inventorySchema = {
   quantity: "number",
 };
 
+export const enemiesSchema = {
+  id: "string",
+  name: "string",
+  health: "number",
+  defense: "number",
+  attack: "number",
+  difficulty: "Enum",
+  Image: "String",
+  type: "enum"
+};
+
+export const bossSchema = {
+   id: "string",
+  name: "string",
+  health: "number",
+  defense: "number",
+  attack: "number",
+  difficulty: "Enum",
+  Image: "image"
+};
+
+export const roomSchema = {
+  id: "string",
+  name: "string",
+  art: "image",
+  numberOfEnemies: "number",
+  type: "enum"
+};
+
+export const itemSchema = {
+  id: "string",
+  name: "string",
+  art: "image",
+  description: "string",
+  effectType: "enum",
+  effectValue: "number",
+  chance: "number",
+  value: "number",
+  itemType: "enum",
+  rarity: "enum"
+};
+
 export const playersStart = [
   { id: 1, name: "Hero", level: 1, class: "Warrior" },
 ];
