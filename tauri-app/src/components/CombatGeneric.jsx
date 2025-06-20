@@ -5,21 +5,112 @@ import { useState } from "react";
 export const CombatGeneric = () => {
   const enemies = useState([]);
   const [attacking, setAttacking] = useState(false);
+  const [diceValues, setDiceValues] = useState([null, null, null]);
+  const [showDice, setShowDice] = useState(false);
+  const [total, setTotal] = useState(null);
+  const [enemyHealth, setEnemyHealth] = useState({ currentHP: 50, maxHP: 50 });
 
-  const getEnemies = () => {
-
-  }
+  const diceFaces = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
+  const playDiceSound = () => {
+    const audio = new Audio("/sounds/dice-roll.mp3");
+    audio.play();
+  };
 
   const handleAttack = () => {
     if (attacking) return; // prevent spamming while animating
+    rollDiceSequentially();
     setAttacking(true);
-    // Remove attack class after animation ends (1s here)
     setTimeout(() => setAttacking(false), 1000);
   };
+
+  const rollDie = (index, delay) => {
+    return new Promise((resolve) => {
+      let rollCount = 0;
+      const interval = setInterval(() => {
+        const val = Math.ceil(Math.random() * 6);
+        setDiceValues((prev) => {
+          const updated = [...prev];
+          updated[index] = val;
+          return updated;
+        });
+        rollCount++;
+        if (rollCount === 1) playDiceSound(); // play sound once per die
+        if (rollCount >= 10) {
+          clearInterval(interval);
+          resolve();
+        }
+      }, delay);
+    });
+  };
+
+const rollDiceSequentially = async () => {
+  setShowDice(true);
+  setDiceValues([null, null, null]);
+  setTotal(null);
+
+  const newDiceValues = [];
+
+  for (let i = 0; i < 3; i++) {
+    await new Promise((resolve) => {
+      let rollCount = 0;
+      let finalValue = 1;
+      const interval = setInterval(() => {
+        const val = Math.ceil(Math.random() * 6);
+        finalValue = val;
+        setDiceValues((prev) => {
+          const updated = [...prev];
+          updated[i] = val;
+          return updated;
+        });
+        rollCount++;
+        if (rollCount === 1) playDiceSound();
+        if (rollCount >= 10) {
+          clearInterval(interval);
+          newDiceValues[i] = finalValue;
+          resolve();
+        }
+      }, 60);
+    });
+  }
+
+  const finalTotal = newDiceValues.reduce((sum, val) => sum + val, 0);
+  console.log("Rolled values:", newDiceValues);
+  console.log("Final total damage:", finalTotal);
+
+  setTotal(finalTotal);
+
+  setEnemyHealth((prev) => {
+    const newHP = Math.max(prev.currentHP - finalTotal, 0);
+    console.log(`Enemy HP going from ${prev.currentHP} to ${newHP}`);
+    return { currentHP: newHP, maxHP: prev.maxHP };
+  });
+
+  setTimeout(() => {
+    setShowDice(false);
+    setTotal(null);
+    setDiceValues([null, null, null]);
+  }, 3000);
+};
+
+  const enemyHealthPercent = (enemyHealth.currentHP / enemyHealth.maxHP) * 100;
 
   return (
     <div className="genericCombat">
       <h1 className="combatTitle">⚔︎ Combat ⚔︎</h1>
+      {showDice && (
+        <div className="diceContainer">
+          {diceValues.map((val, i) => (
+            <div key={i} className="die">
+              {val !== null ? diceFaces[val - 1] : "?"}
+            </div>
+          ))}
+        </div>
+      )}
+      {total !== null && (
+        <div className="diceTotal">
+          Total: {diceValues.reduce((a, b) => a + b, 0)}
+        </div>
+      )}
       <div className="opponentContainer">
         <div className="circle"></div>
         <div className="nameCard opponentNameCard">
@@ -36,7 +127,13 @@ export const CombatGeneric = () => {
               marginBottom: "10px",
             }}
           >
-            <div className="healthFill" style={{ width: 100 }}></div>
+            <div
+              className="healthFill"
+              style={{
+                width: `${enemyHealthPercent}%`,
+                transition: "width 0.5s ease",
+              }}
+            ></div>
           </div>
         </div>
       </div>
@@ -62,7 +159,9 @@ export const CombatGeneric = () => {
       </div>
 
       <div className="combatOptions">
-        <Button className="combatOption" onClick={handleAttack}>Attack</Button>
+        <Button className="combatOption" onClick={handleAttack}>
+          Attack
+        </Button>
         <Button className="combatOption">Defend</Button>
         <Button className="combatOption">Item</Button>
         <Button className="combatOption">Run</Button>
