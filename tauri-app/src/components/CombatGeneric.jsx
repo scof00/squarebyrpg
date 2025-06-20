@@ -11,37 +11,21 @@ export const CombatGeneric = () => {
   const [enemyHealth, setEnemyHealth] = useState({ currentHP: 50, maxHP: 50 });
 
   const diceFaces = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
+
   const playDiceSound = () => {
     const audio = new Audio("/sounds/dice-roll.mp3");
     audio.play();
   };
 
-  const handleAttack = () => {
-    if (attacking) return; // prevent spamming while animating
-    rollDiceSequentially();
-    setAttacking(true);
-    setTimeout(() => setAttacking(false), 1000);
+  const playSwordSound = () => {
+    const audio = new Audio("/sounds/sword-slice.mp3");
+    audio.play();
   };
 
-  const rollDie = (index, delay) => {
-    return new Promise((resolve) => {
-      let rollCount = 0;
-      const interval = setInterval(() => {
-        const val = Math.ceil(Math.random() * 6);
-        setDiceValues((prev) => {
-          const updated = [...prev];
-          updated[index] = val;
-          return updated;
-        });
-        rollCount++;
-        if (rollCount === 1) playDiceSound(); // play sound once per die
-        if (rollCount >= 10) {
-          clearInterval(interval);
-          resolve();
-        }
-      }, delay);
-    });
-  };
+const handleAttack = () => {
+  if (attacking) return;
+  rollDiceSequentially();
+};
 
 const rollDiceSequentially = async () => {
   setShowDice(true);
@@ -74,22 +58,32 @@ const rollDiceSequentially = async () => {
   }
 
   const finalTotal = newDiceValues.reduce((sum, val) => sum + val, 0);
-  console.log("Rolled values:", newDiceValues);
-  console.log("Final total damage:", finalTotal);
-
   setTotal(finalTotal);
 
-  setEnemyHealth((prev) => {
-    const newHP = Math.max(prev.currentHP - finalTotal, 0);
-    console.log(`Enemy HP going from ${prev.currentHP} to ${newHP}`);
-    return { currentHP: newHP, maxHP: prev.maxHP };
-  });
+  setEnemyHealth((prev) => ({
+    currentHP: Math.max(prev.currentHP - finalTotal, 0),
+    maxHP: prev.maxHP,
+  }));
 
+  // Show dice total for 2 seconds, then trigger attack animation
   setTimeout(() => {
     setShowDice(false);
     setTotal(null);
     setDiceValues([null, null, null]);
-  }, 3000);
+
+    // Reset attack to false first so class can be re-applied
+    setAttacking(false);
+
+    // Small timeout to let React remove class before re-adding
+    setTimeout(() => {
+      setAttacking(true);
+      setTimeout(() => {
+        playSwordSound()
+      }, 200);
+      // Remove attack class after animation duration (500ms)
+      setTimeout(() => setAttacking(false), 500);
+    }, 50);
+  }, 700);
 };
 
   const enemyHealthPercent = (enemyHealth.currentHP / enemyHealth.maxHP) * 100;
