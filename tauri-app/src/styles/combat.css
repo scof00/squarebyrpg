@@ -3,23 +3,25 @@
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  font-family: Arial, sans-serif;
 }
 
-.combatTitle{
-    position: fixed;
-    top: 2vh;          /* a little space from the top */
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 2rem;
-    font-weight: bold;
-    text-align: center;
-    z-index: 1000;
-    background-color: #f9f5f0; /* optional: helps readability */
-    padding: 0.5rem 1rem;
-    border-radius: 10px;
+/* Title */
+.combatTitle {
+  position: fixed;
+  top: 2vh;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  z-index: 1000;
+  background-color: #f9f5f0;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
 }
 
-/* Opponent (circle) top right */
+/* Opponent container and shape fixed large size */
 .opponentContainer {
   position: fixed;
   top: 15vh;
@@ -29,9 +31,17 @@
   align-items: center;
   gap: 1vh;
   z-index: 1000;
+  width: 220px; /* fixed width large screen */
 }
 
-/* Player (square) bottom left */
+.circle {
+  width: 200px;
+  height: 200px;
+  background-color: green;
+  border-radius: 50%;
+}
+
+/* Player container and shape fixed large size */
 .playerContainer {
   position: fixed;
   bottom: 25vh;
@@ -41,51 +51,69 @@
   align-items: center;
   gap: 1vh;
   z-index: 900;
+  width: 300px; /* fixed width large screen */
 }
 
-/* Your existing .square is 100x100, red */
+.square {
+  width: 300px;
+  height: 300px;
+  background-color: rgb(173, 13, 13);
+  position: relative;
+  z-index: 1;
+}
 
-/* Name card common styles */
+/* Name card */
 .nameCard {
   background: #f3f3f3;
   border: 3px solid #783f04;
   border-radius: 12px;
   padding: 0.4rem 1rem;
-  width: 220px;
+  width: 220px; /* fixed width large screen */
   box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
   text-align: center;
+  font-size: 1.1rem;
+  box-sizing: border-box; /* include padding and border in width */
 }
 
-/* Pokémon name */
+/* Player name card above square with higher z-index */
+.playerNameCard {
+  position: relative;
+  z-index: 10;
+}
+
+/* Pokemon name text */
 .pokemonName {
   font-weight: bold;
   font-size: 1.2rem;
   margin-bottom: 0.4rem;
 }
 
-/* Health bar background */
+/* Health bar */
 .healthBar {
-  width: 100%;
+  width: 90%;  /* slightly smaller than name card for spacing */
+  max-width: 100%;
   height: 18px;
   background-color: #bfbfbf;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: inset 0 0 5px #6c6c6c;
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* Health fill bar */
+/* Health fill with smooth transition */
 .healthFill {
-  width: 100%; /* start full */
   height: 100%;
   background: linear-gradient(90deg, #4caf50 0%, #8bc34a 100%);
+  transition: width 0.5s ease;
+  width: 100%;
 }
 
-
-/* Combat menu */
+/* Combat options */
 .combatOptions {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 2vh;
   justify-content: center;
   border-style: outset;
@@ -100,8 +128,8 @@
   z-index: 1000;
   padding: 3vh 5vw;
   max-width: 640px;
-  max-height: 150px;
   width: 40vw;
+  min-width: 260px;
 }
 
 .combatOption {
@@ -115,6 +143,7 @@
   background-color: #fff3e0;
   cursor: pointer;
   transition: background-color 0.2s ease, color 0.2s ease;
+  font-size: 1.1rem;
 }
 
 .combatOption:hover {
@@ -123,78 +152,24 @@
   border-color: black;
 }
 
-@keyframes lowerHealth {
-  from {
-    width: 100%;
-  }
-  to {
-    width: 50%; /* target width, e.g. 50% health */
-  }
-}
-
-/* App.css */
-.circle {
-  width: 200px;
-  height: 200px;
-  background-color: green;
-  border-radius: 50%;
-}
-
-.triangle {
-  width: 0;
-  height: 0;
-  border-left: 50px solid transparent;
-  border-right: 50px solid transparent;
-  border-bottom: 100px solid blue;
-}
-
-.star {
-  width: 100px;
-  height: 100px;
-  background: gold;
-  clip-path: polygon(
-    50% 0%,
-    61% 35%,
-    98% 35%,
-    68% 57%,
-    79% 91%,
-    50% 70%,
-    21% 91%,
-    32% 57%,
-    2% 35%,
-    39% 35%
-  );
-}
-
-.square {
-  width: 300px;
-  height: 300px;
-  background-color: rgb(173, 13, 13);
-  position: relative;
-  z-index: 1;
-}
-
-.playerNameCard {
-  position: relative; /* required for z-index */
-  z-index: 10; /* higher than square */
-}
-
+/* Attack animation */
 @keyframes attackMove {
   0% {
-    transform: translate(0);
+    transform: translate(0, 0);
   }
   50% {
-    transform: translate(400px, -150px); /* adjust distance as needed */
+    transform: translate(400px, -150px);
   }
   100% {
-    transform: translate(0);
+    transform: translate(0, 0);
   }
 }
 
 .square.attack {
   animation: attackMove 0.5s ease forwards;
 }
- 
+
+/* Dice container */
 .diceContainer {
   position: fixed;
   bottom: 50%;
@@ -205,13 +180,13 @@
   z-index: 9999;
 }
 
+/* Dice faces */
 .die {
   font-size: 6rem;
   font-family: "Segoe UI Emoji", sans-serif;
   color: #222;
   animation: rollDie 0.6s ease-in-out;
 }
-
 
 @keyframes rollDie {
   0% { transform: rotate(0deg) scale(1); }
@@ -221,6 +196,7 @@
   100% { transform: rotate(720deg) scale(1); }
 }
 
+/* Dice total popup */
 .diceTotal {
   position: fixed;
   bottom: 35%;
@@ -234,4 +210,54 @@
   border-radius: 12px;
   box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
   z-index: 9999;
+}
+
+/* Responsive adjustments below 1024px */
+@media (max-width: 1024px) {
+  .opponentContainer,
+  .playerContainer {
+    width: 20vw;
+    max-width: 140px;
+    min-width: 100px;
+  }
+
+  .circle,
+  .square {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1;
+  }
+
+  .nameCard {
+    width: 100%;
+    max-width: 140px;
+    font-size: 0.9rem;
+    padding: 0.3rem 0.6rem;
+  }
+
+  .healthBar {
+    width: 90%;
+  }
+
+  .combatOptions {
+    width: 90vw;
+    max-width: 400px;
+    padding: 2vh 3vw;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5vh;
+  }
+
+  .combatOption {
+    font-size: 1rem;
+    padding: 1vh 1vw;
+  }
+
+  .die {
+    font-size: 4rem;
+  }
+
+  .diceTotal {
+    font-size: 1.5rem;
+    padding: 0.6rem 1.2rem;
+  }
 }
