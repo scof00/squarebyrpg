@@ -37,6 +37,11 @@
   "plugins": {
     "fs": {
       "requireLiteralLeadingDot": false
+    },
+    "sql": {
+      "default": {
+        "load": ["sqlite:game.db"]
+      }
     }
   }
 }

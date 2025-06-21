@@ -9,6 +9,7 @@
     "fs:allow-read-text-file",
     "fs:allow-applocaldata-write",
     "fs:allow-applocaldata-read",
+    "sql:allow-execute",
     {
       "identifier": "fs:scope",
       "allow": [
@@ -16,6 +17,12 @@
           "path": "$APPLOCALDATA/*"
         }
       ]
+    },
+    {
+      "identifier": "sql:default",
+      "load": ["sqlite:game.db"],
+      "execute": true,
+      "select": true
     }
   ]
 }

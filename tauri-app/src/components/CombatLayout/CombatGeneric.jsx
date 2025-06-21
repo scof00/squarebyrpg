@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "reactstrap";
 import "../../styles/combat.css";
 import { AttackSequence } from "../CombatActions/attack";
+import { useNavigate } from "react-router-dom";
 
 export const CombatGeneric = () => {
   const [enemyHealth, setEnemyHealth] = useState({ currentHP: 50, maxHP: 50 });
@@ -12,6 +13,10 @@ export const CombatGeneric = () => {
     const audio = new Audio("/sounds/sword-swing.mp3");
     audio.play();
   };
+
+  const navigate = useNavigate();
+
+  const goToHome = () => navigate('/');
 
   const applyDamage = (amount) => {
     setEnemyHealth((prev) => ({
@@ -72,7 +77,7 @@ export const CombatGeneric = () => {
         </Button>
         <Button className="combatOption">Defend</Button>
         <Button className="combatOption">Item</Button>
-        <Button className="combatOption">Run</Button>
+        <Button className="combatOption" onClick={goToHome}>Run</Button>
       </div>
 
       {isAttacking && <AttackSequence onResolve={handleAttackResolved} />}
