@@ -35,7 +35,7 @@ export async function initDatabase() {
             type IN (
             'Slime', 'Ogre', 'Plinth', 'Mage', 'Healer',
             'Witch', 'Goblin', 'Archer', 'Devil', 'Plant',
-            'Smudge', 'Bat'
+            'Smudge', 'Bat', 'Dragon', 'Knight'
             )
         ),
         image TEXT
@@ -43,5 +43,6 @@ export async function initDatabase() {
         `
     )
     .then(console.log("✅ enemy table created"));
+
   return dbInstance;
 }

@@ -59,3 +59,12 @@ export async function deleteEnemy(id) {
   const db = await getDb();
   await db.execute(`DELETE FROM enemy WHERE id = ?`, [id]);
 }
+
+export async function getRandomEnemiesByDifficulty(difficulty, count = 3) {
+  const db = await getDb();
+  const enemies = await db.select(
+  "SELECT * FROM enemy WHERE difficulty = ? ORDER BY RANDOM() LIMIT ?",
+  [difficulty, count]
+);
+  return enemies;
+}

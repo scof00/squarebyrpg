@@ -1,65 +1,84 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "reactstrap";
 import "../../styles/combat.css";
 import { AttackSequence } from "../CombatActions/attack";
 import { useNavigate } from "react-router-dom";
+import { Enemies } from "./Enemies"; // import it here
+import { getRandomEnemiesByDifficulty } from "../../Utils/enemyDB";
 
 export const CombatGeneric = () => {
-  const [enemyHealth, setEnemyHealth] = useState({ currentHP: 50, maxHP: 50 });
+  const [enemies, setEnemies] = useState([]);
+  const [selectedEnemyIndex, setSelectedEnemyIndex] = useState(null);
   const [isAttacking, setIsAttacking] = useState(false);
   const [attackAnimation, setAttackAnimation] = useState(false);
+
+  const navigate = useNavigate();
+  const hasResolved = useRef(false);
+
+  useEffect(() => {
+    const fetchEnemies = async () => {
+      const count = Math.floor(Math.random() * 3) + 3;
+      const loaded = await getRandomEnemiesByDifficulty("Easy", count);
+      const withHP = loaded.map((e) => ({
+        ...e,
+        currentHP: e.health ?? 50,
+      }));
+      setEnemies(withHP);
+    };
+
+    fetchEnemies();
+  }, []);
 
   const playSwordSound = () => {
     const audio = new Audio("/sounds/sword-swing.mp3");
     audio.play();
   };
 
-  const navigate = useNavigate();
-
-  const goToHome = () => navigate('/');
-
   const applyDamage = (amount) => {
-    setEnemyHealth((prev) => ({
-      ...prev,
-      currentHP: Math.max(prev.currentHP - amount, 0),
-    }));
+    console.log("Damage:", amount);
+    setEnemies((prev) =>
+      prev.map((enemy, i) =>
+        i === selectedEnemyIndex
+          ? { ...enemy, currentHP: Math.max(enemy.currentHP - amount, 0) }
+          : enemy
+      )
+    );
   };
 
   const handleAttackClick = () => {
-    if (!isAttacking) setIsAttacking(true);
+    if (!isAttacking && selectedEnemyIndex !== null) {
+      setIsAttacking(true);
+    }
   };
 
   const handleAttackResolved = (damage) => {
-    // Show animation + play sound
+    if (hasResolved.current) return;
+    hasResolved.current = true;
+
+    console.log("Damage passed to applyDamage:", damage);
+
     setAttackAnimation(true);
     playSwordSound();
     applyDamage(damage);
 
-    // Reset everything after animation ends
     setTimeout(() => {
       setAttackAnimation(false);
       setIsAttacking(false);
-    }, 500); // match .attack animation duration
+      hasResolved.current = false;
+    }, 500);
   };
-
-  const enemyHealthPercent = (enemyHealth.currentHP / enemyHealth.maxHP) * 100;
 
   return (
     <div className="genericCombat">
+      <Button onClick={() => navigate("/")}>Home</Button>
       <h1 className="combatTitle">⚔︎ Combat ⚔︎</h1>
 
-      <div className="opponentContainer">
-        <div className="circle"></div>
-        <div className="nameCard">
-          <div className="pokemonName">Enemy Circle</div>
-          <div className="healthBar">
-            <div
-              className="healthFill"
-              style={{ width: `${enemyHealthPercent}%`, transition: "width 0.5s ease" }}
-            />
-          </div>
-        </div>
-      </div>
+      {/* ENEMIES HERE */}
+      <Enemies
+        enemies={enemies}
+        selectedEnemyIndex={selectedEnemyIndex}
+        onSelectEnemy={setSelectedEnemyIndex}
+      />
 
       <div className="playerContainer">
         <div className={`square ${attackAnimation ? "attack" : ""}`}></div>
@@ -72,15 +91,26 @@ export const CombatGeneric = () => {
       </div>
 
       <div className="combatOptions">
-        <Button className="combatOption" onClick={handleAttackClick} disabled={isAttacking}>
+        <Button
+          className="combatOption"
+          onClick={handleAttackClick}
+          disabled={isAttacking || selectedEnemyIndex === null}
+        >
           Attack
         </Button>
         <Button className="combatOption">Defend</Button>
         <Button className="combatOption">Item</Button>
-        <Button className="combatOption" onClick={goToHome}>Run</Button>
+        <Button className="combatOption" onClick={() => navigate("/")}>
+          Run
+        </Button>
       </div>
 
-      {isAttacking && <AttackSequence onResolve={handleAttackResolved} />}
+      {isAttacking && !attackAnimation && (
+        <AttackSequence
+          key={`attack-${Date.now()}`}
+          onResolve={handleAttackResolved}
+        />
+      )}
     </div>
   );
 };

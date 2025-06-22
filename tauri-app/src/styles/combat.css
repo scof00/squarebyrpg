@@ -4,6 +4,10 @@
   height: 100vh;
   overflow: hidden;
   font-family: Arial, sans-serif;
+   display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 2rem;
 }
 
 /* Title */
@@ -22,17 +26,21 @@
 }
 
 /* Opponent container and shape fixed large size */
-.opponentContainer {
-  position: fixed;
-  top: 15vh;
-  right: 25vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1vh;
-  z-index: 1000;
-  width: 220px; /* fixed width large screen */
+.enemyCard {
+  padding: 1rem;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 180px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, border 0.2s ease;
 }
+
+.enemyCard.selected {
+  border-color: gold;
+  transform: scale(1.05);
+}
+
 
 .circle {
   width: 200px;
@@ -214,11 +222,18 @@
 
 /* Responsive adjustments below 1024px */
 @media (max-width: 1024px) {
-  .opponentContainer,
   .playerContainer {
     width: 20vw;
     max-width: 140px;
     min-width: 100px;
+  }
+  .opponentContainer {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    max-width: calc(100px * 3 + 1rem * 2);
+  }
+
+  .enemyCard {
+    max-width: 100px;
   }
 
   .circle,
@@ -261,3 +276,61 @@
     padding: 0.6rem 1.2rem;
   }
 }
+
+.enemyCard.selected {
+  border-color: gold;
+  transform: scale(1.15);
+}
+
+.opponentContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 120px);
+  gap: 1.5rem; /* Increase this to add space between cards */
+  position: fixed;
+  bottom: 25vh;
+  right: 15vw;
+  max-width: calc(120px * 3 + 2rem * 2);
+  width: max-content;
+  box-sizing: border-box;
+  padding: 0.5rem;
+  border-radius: 8px;
+  z-index: 900;
+}
+
+
+
+html, body {
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.enemyCard {
+  padding: 1rem;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, border 0.2s ease;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.enemyCard .circle {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 0.5rem;
+  border-radius: 50%;
+  background-color: green;
+  flex-shrink: 0;
+  
+}
+
+.enemyCard .nameCard {
+  max-width: 120px;
+  margin: 0 auto;
+  font-size: 0.9rem;
+  padding: 0.3rem 0.6rem;
+  box-sizing: border-box;
+}
+

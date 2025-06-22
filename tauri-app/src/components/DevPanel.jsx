@@ -29,6 +29,8 @@ const enemyTypeOptions = [
   "Plant",
   "Smudge",
   "Bat",
+  "Dragon",
+  "Knight"
 ];
 
 // Schemas for fields and types per table

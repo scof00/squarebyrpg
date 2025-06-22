@@ -24,7 +24,7 @@ export const itemType = {
 
 export const effectType = {};
 
-export const enemyType  ={
+export const enemyType = {
   SLIME: "Slime",
   OGRE: "Ogre",
   PLINTH: "Plinth",
@@ -36,5 +36,7 @@ export const enemyType  ={
   DEVIL: "Devil",
   PLANT: "Plant",
   SMUDGE: "Smudge",
-  BAT: "Bat"
+  BAT: "Bat",
+  DRAGON: "Dragon",
+  KNIGHT: "Knight",
 };
