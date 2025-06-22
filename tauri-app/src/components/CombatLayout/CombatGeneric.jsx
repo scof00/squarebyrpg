@@ -37,12 +37,21 @@ export const CombatGeneric = () => {
   const applyDamage = (amount) => {
     console.log("Damage:", amount);
     setEnemies((prev) =>
-      prev.map((enemy, i) =>
-        i === selectedEnemyIndex
-          ? { ...enemy, currentHP: Math.max(enemy.currentHP - amount, 0) }
-          : enemy
-      )
+      prev
+        .map((enemy, i) =>
+          i === selectedEnemyIndex
+            ? { ...enemy, currentHP: Math.max(enemy.currentHP - amount, 0) }
+            : enemy
+        )
+        .filter((enemy) => enemy.currentHP > 0)
     );
+
+    setSelectedEnemyIndex((prevIndex) => {
+      if (enemies[prevIndex] && enemies[prevIndex].currentHP - amount <= 0) {
+        return null;
+      }
+      return prevIndex;
+    });
   };
 
   const handleAttackClick = () => {
