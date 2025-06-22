@@ -18,10 +18,23 @@ export const itemType = {
   ARMOR: "Armor",
   WEAPON: "Weapon",
   SCROLL: "Scroll",
-  POTION: "Potion",
+  BUFF: "Buff",
   CONSUMABLE: "Consumable",
 };
 
 export const effectType = {};
 
-export const enemyType  ={};
+export const enemyType  ={
+  SLIME: "Slime",
+  OGRE: "Ogre",
+  PLINTH: "Plinth",
+  MAGE: "Mage",
+  HEALER: "Healer",
+  WITCH: "Witch",
+  GOBLIN: "Goblin",
+  ARCHER: "Archer",
+  DEVIL: "Devil",
+  PLANT: "Plant",
+  SMUDGE: "Smudge",
+  BAT: "Bat"
+};

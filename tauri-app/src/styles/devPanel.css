@@ -1,0 +1,167 @@
+.devpanel-container {
+  position: fixed;  /* fix it in viewport */
+  top: 2rem;        /* some top spacing */
+  left: 50%;        /* move to center horizontally */
+  transform: translateX(-50%);  /* pull it back by half its width */
+  max-width: 700px;
+  width: 90vw;      /* responsive width on small screens */
+  padding: 1rem;
+  box-sizing: border-box;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  z-index: 1000;    /* ensure it’s on top */
+}
+
+.devpanel-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.devpanel-select,
+.devpanel-filter {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.devpanel-toggle-btn,
+.devpanel-submit-btn,
+.devpanel-save-btn,
+.devpanel-cancel-btn,
+.devpanel-edit-btn,
+.devpanel-delete-btn
+.devpanel-home-btn {
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  margin-top: 0.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.devpanel-toggle-btn {
+  background-color: #28a745;
+  color: white;
+  width: 100%;
+  font-size: 1.1rem;
+}
+
+.devpanel-toggle-btn:hover {
+  background-color: #218838;
+}
+
+.devpanel-submit-btn,
+.devpanel-save-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.devpanel-submit-btn:hover,
+.devpanel-save-btn:hover {
+  background-color: #0056b3;
+}
+
+.devpanel-cancel-btn {
+  background-color: #6c757d;
+  color: white;
+  margin-left: 0.5rem;
+}
+
+.devpanel-cancel-btn:hover {
+  background-color: #5a6268;
+}
+
+.devpanel-edit-btn {
+  background-color: #ffc107;
+  color: #212529;
+  margin-right: 0.5rem;
+}
+
+.devpanel-edit-btn:hover {
+  background-color: #e0a800;
+}
+
+.devpanel-delete-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.devpanel-delete-btn:hover {
+  background-color: #c82333;
+}
+
+.devpanel-form {
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.devpanel-form-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.devpanel-form-group {
+  margin-bottom: 0.75rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.devpanel-label {
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+}
+
+.devpanel-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  max-height: 600px;
+}
+
+.devpanel-list-item {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  background: white;
+}
+
+.devpanel-edit-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.devpanel-json {
+  font-family: "Courier New", Courier, monospace;
+  background-color: #f1f1f1;
+  padding: 0.5rem;
+  border-radius: 6px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.devpanel-home-btn {
+  background-color: #28a745;
+  color: white;
+  width: 100%;
+  font-size: 1.1rem;
+}
+
+.devpanel-home-btn:hover {
+  background-color: #218838;
+}
