@@ -120,6 +120,20 @@ export const CombatGeneric = () => {
           onResolve={handleAttackResolved}
         />
       )}
+
+      {enemies.length === 0 && (
+        <div className="overlay">
+          <button
+            className="proceedButton"
+            onClick={() => {
+              // Your logic here, e.g., navigate to next screen or end combat
+              navigate("/"); // or any other action
+            }}
+          >
+            Proceed
+          </button>
+        </div>
+      )}
     </div>
   );
 };
