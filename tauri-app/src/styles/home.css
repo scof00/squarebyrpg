@@ -20,7 +20,7 @@
   gap: 2rem;
   box-sizing: border-box;   /* include padding in width/height */
   overflow: hidden;         /* no scrollbars */
-  background-image: url('../../public/backgrounds/homeScreenBackground.jpg');
+  background-image: url('../../backgrounds/homeScreenBackground.jpg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover; 

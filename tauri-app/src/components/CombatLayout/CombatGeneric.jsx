@@ -114,12 +114,11 @@ export const CombatGeneric = () => {
         </Button>
       </div>
 
-      {isAttacking && !attackAnimation && (
-        <AttackSequence
-          key={`attack-${Date.now()}`}
-          onResolve={handleAttackResolved}
-        />
-      )}
+      <AttackSequence
+        trigger={isAttacking && !attackAnimation}
+        onResolve={handleAttackResolved}
+        onDismiss={() => setIsAttacking(false)}
+      />
 
       {enemies.length === 0 && (
         <div className="overlay">

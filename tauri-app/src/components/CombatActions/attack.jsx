@@ -1,46 +1,43 @@
-// components/AttackSequence.jsx
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import "../../styles/combat.css";
+import { modifyAttack } from "../CombatActions/attackModification"; // import your function
 
 const diceFaces = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
 
-export const AttackSequence = ({ onResolve }) => {
+export const AttackSequence = ({ trigger, onResolve, onDismiss }) => {
   const [diceValues, setDiceValues] = useState([null, null, null]);
-  const [showDice, setShowDice] = useState(true);
-  const resolved = useRef(false);
-  const totalRef = useRef(null);
+  const [modBreakdown, setModBreakdown] = useState([]);
+  const [finalTotal, setFinalTotal] = useState(null);
+  const [popupVisible, setPopupVisible] = useState(false);
+  const hasResolved = useRef(false);
+
   useEffect(() => {
-    startSequence();
-  }, []);
+    if (trigger && !popupVisible) {
+      setPopupVisible(true);
+      hasResolved.current = false;
+      runRoll();
+    }
+  }, [trigger]);
 
   const playDiceSound = () => {
-    const audio = new Audio("/sounds/dice-roll.mp3");
-    audio.play();
+    new Audio("/sounds/dice-roll.mp3").play();
   };
 
   const playSwordSound = () => {
-    const audio = new Audio("/sounds/sword-slice.mp3");
-    audio.play();
+    new Audio("/sounds/sword-slice.mp3").play();
   };
 
-  const rollDie = (index, delay) => {
-    return new Promise((resolve) => {
+  const rollDie = (index, delay) =>
+    new Promise((resolve) => {
       let rollCount = 0;
-      let val = 1;
-
       const interval = setInterval(() => {
-        val = Math.ceil(Math.random() * 6);
-
-        if (rollCount > 0) {
-          // Only update diceValues starting from second tick
-          setDiceValues((prev) => {
-            const updated = [...prev];
-            updated[index] = val;
-            return updated;
-          });
-          if (rollCount === 1) playDiceSound();
-        }
-
+        const val = Math.ceil(Math.random() * 6);
+        setDiceValues((prev) => {
+          const updated = [...prev];
+          updated[index] = val;
+          return updated;
+        });
+        if (rollCount === 0) playDiceSound();
         rollCount++;
         if (rollCount >= 10) {
           clearInterval(interval);
@@ -48,45 +45,71 @@ export const AttackSequence = ({ onResolve }) => {
         }
       }, delay);
     });
-  };
-  const startSequence = async () => {
-    const results = [];
-    setDiceValues([null, null, null]);
 
+  const runRoll = async () => {
+    setDiceValues([null, null, null]); // clear dice faces
+    setModBreakdown([]); // clear modifier breakdown lines
+    setFinalTotal(null);
+    const results = [];
     for (let i = 0; i < 3; i++) {
       const result = await rollDie(i, 60);
       results.push(result);
     }
 
-    const totalDamage = results.reduce((a, b) => a + b, 0);
-    totalRef.current = totalDamage; // store in ref for render
+    const baseTotal = results.reduce((a, b) => a + b, 0);
+    const { breakdown, total } = modifyAttack(baseTotal);
 
-    console.log("Final rolled values:", results, "Total damage:", totalDamage);
+    setModBreakdown([`Base Roll: ${baseTotal}`, ...breakdown]);
+    setFinalTotal(total);
 
-    setTimeout(() => {
-      if (!resolved.current) {
-        resolved.current = true;
-        onResolve(totalRef.current); // use exact value displayed
-        playSwordSound();
-        setShowDice(false);
-      }
-    }, 800);
+    playSwordSound();
+
+    if (!hasResolved.current) {
+      onResolve(total);
+      hasResolved.current = true;
+    }
   };
 
+  const handleDismiss = () => {
+    setPopupVisible(false);
+    onDismiss();
+  };
+
+  if (!popupVisible) return null;
+
   return (
-    <>
-      {showDice && (
-        <div className="diceContainer">
+    <div className="dicePopupOverlay">
+      <div className="dicePopupContent">
+        <div className="diceRow">
           {diceValues.map((val, i) => (
             <div key={i} className="die">
               {val !== null ? diceFaces[val - 1] : "?"}
             </div>
           ))}
         </div>
-      )}
-      {totalRef.current !== null && (
-        <div className="diceTotal">Total: {totalRef.current}</div>
-      )}
-    </>
+
+        <div className="diceBreakdown" style={{ marginTop: "1rem" }}>
+          {modBreakdown.map((line, idx) => (
+            <div key={idx} style={{ marginBottom: "0.3rem" }}>
+              {line}
+            </div>
+          ))}
+        </div>
+
+        {finalTotal !== null && (
+          <div style={{ fontWeight: "bold", marginTop: "1rem" }}>
+            Total Damage: {finalTotal}
+          </div>
+        )}
+
+        <button
+          className="dismissButton"
+          onClick={handleDismiss}
+          style={{ marginTop: "1.5rem", padding: "0.5rem 1rem" }}
+        >
+          Dismiss
+        </button>
+      </div>
+    </div>
   );
 };

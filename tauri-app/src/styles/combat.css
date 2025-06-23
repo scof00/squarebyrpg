@@ -362,3 +362,96 @@ html, body {
 .proceedButton:hover {
   background-color: #e6c200;
 }
+
+.dicePopupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+
+.dicePopupContent {
+  background: #fff6e3;
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 0 10px #000;
+  max-width: 400px;
+  width: 90%;
+}
+
+.diceRow {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 1.2rem;
+}
+
+.diceBreakdown {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.dismissButton {
+  padding: 0.8rem 2rem;
+  font-size: 1.2rem;
+  background: gold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.dismissButton:hover {
+  background: #e6c200;
+}
+.dicePopupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dicePopupContent {
+  background-color: #fffef9;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 0 10px #000;
+  text-align: center;
+}
+
+.diceRow {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.diceBreakdown {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+}
+
+.dismissButton {
+  margin-top: 1.5rem;
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  background-color: #783f04;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
