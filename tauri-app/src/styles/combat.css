@@ -455,3 +455,11 @@ html, body {
   border-radius: 10px;
   cursor: pointer;
 }
+
+.enemyImage {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  margin: 0 auto;
+  display: block;
+}

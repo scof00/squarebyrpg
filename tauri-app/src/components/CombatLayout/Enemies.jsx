@@ -14,7 +14,15 @@ export const Enemies = ({ enemies, selectedEnemyIndex, onSelectEnemy }) => {
             className={`enemyCard ${isSelected ? "selected" : ""}`}
             onClick={() => onSelectEnemy(i)}
           >
-            <div className="circle"></div>
+            {enemy.image ? (
+              <img
+                src={enemy.image}
+                alt={enemy.name}
+                className="enemyImage"
+              />
+            ) : (
+              <div className="circle"></div>
+            )}
             <div className="nameCard">
               <div className="pokemonName">{enemy.name}</div>
               <div className="healthBar">
