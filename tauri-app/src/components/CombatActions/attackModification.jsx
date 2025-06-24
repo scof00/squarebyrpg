@@ -3,7 +3,9 @@ export function modifyAttack(baseDamage) {
   const breakdown = [];
   let total = baseDamage;
 
-  const inventory = ["Fire Amulet", "Sharp Blade"]; // Replace with real inventory later
+  const inventory = ["Fire Amulet", "Sharp Blade"];
+
+  //Static additions first, then multipliers in the second part.
 
   if (inventory.includes("Fire Amulet")) {
     breakdown.push("Fire Amulet: +3");

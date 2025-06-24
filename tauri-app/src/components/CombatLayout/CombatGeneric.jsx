@@ -5,12 +5,18 @@ import { AttackSequence } from "../CombatActions/attack";
 import { useNavigate } from "react-router-dom";
 import { Enemies } from "./Enemies"; // import it here
 import { getRandomEnemiesByDifficulty } from "../../Utils/enemyDB";
+import { EnemyBehaviorSorter } from "../Behavior/EnemyBehaviorSorter";
 
 export const CombatGeneric = () => {
   const [enemies, setEnemies] = useState([]);
   const [selectedEnemyIndex, setSelectedEnemyIndex] = useState(null);
   const [isAttacking, setIsAttacking] = useState(false);
   const [attackAnimation, setAttackAnimation] = useState(false);
+  const [turn, setTurn] = useState(1);
+  const [playerActionsLeft, setPlayerActionsLeft] = useState(2);
+  const [isPlayerTurn, setIsPlayerTurn] = useState(true);
+  const [playerHealth, setPlayerHealth] = useState(100);
+  const [playerMaxHealth, setPlayerMaxHealth] = useState(100);
 
   const navigate = useNavigate();
   const hasResolved = useRef(false);
@@ -33,6 +39,8 @@ export const CombatGeneric = () => {
     const audio = new Audio("/sounds/sword-swing.mp3");
     audio.play();
   };
+
+  const playerHealthPercent = (playerHealth / 100) * 100;
 
   const applyDamage = (amount) => {
     console.log("Damage:", amount);
@@ -74,13 +82,49 @@ export const CombatGeneric = () => {
       setAttackAnimation(false);
       setIsAttacking(false);
       hasResolved.current = false;
+      handlePlayerAction();
     }, 500);
+  };
+
+  const handlePlayerAction = () => {
+    setPlayerActionsLeft((prev) => {
+      const remaining = prev - 1;
+      if (remaining <= 0) {
+        // Switch to enemy turn after player finishes
+        setIsPlayerTurn(false);
+        setTurn((prev) => prev + 1);
+        setTimeout(() => enemyTurn(), 1000); // slight delay to simulate enemy thinking
+      }
+      return remaining;
+    });
+  };
+
+  const enemyTurn = () => {
+    // Example enemy behavior
+    enemies.forEach((enemy) => {
+      if (enemy.currentHP > 0) {
+        // enemy attack logic here (e.g., reduce player HP)
+        EnemyBehaviorSorter(enemy, setPlayerHealth, playerHealth);
+      }
+    });
+
+    // Wait for attacks to visually/temporally finish (if needed)
+    setTimeout(() => {
+      // Increment turn number
+      setTurn((prev) => prev + 1);
+
+      // Reset player state
+      setPlayerActionsLeft(2);
+      setIsPlayerTurn(true);
+    }, 1000); // delay to simulate enemy animations
   };
 
   return (
     <div className="genericCombat">
       <Button onClick={() => navigate("/")}>Home</Button>
-      <h1 className="combatTitle">⚔︎ Combat ⚔︎</h1>
+      <h1 className="combatTitle">
+        ⚔︎ Turn: {turn} - {isPlayerTurn ? "Player's Turn" : "Enemy's Turn"} ⚔︎
+      </h1>
 
       {/* ENEMIES HERE */}
       <Enemies
@@ -94,7 +138,16 @@ export const CombatGeneric = () => {
         <div className="nameCard playerNameCard">
           <div className="pokemonName">Squareby</div>
           <div className="healthBar">
-            <div className="healthFill" style={{ width: "100%" }} />
+            <div
+              className="healthFill"
+              style={{
+                width: `${playerHealthPercent}%`,
+                transition: "width 0.5s ease",
+              }}
+            />
+            <div className="hpNumbers">
+              {playerHealth} / {playerMaxHealth}
+            </div>
           </div>
         </div>
       </div>
