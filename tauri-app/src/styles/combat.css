@@ -8,6 +8,10 @@
   justify-content: space-between;
   align-items: flex-start;
   padding: 2rem;
+  background-image: url('../../backgrounds/StormyField.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover; 
 }
 
 /* Title */
