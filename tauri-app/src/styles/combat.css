@@ -53,18 +53,18 @@
   border-radius: 50%;
 }
 
-/* Player container and shape fixed large size */
 .playerContainer {
   position: fixed;
   bottom: 25vh;
-  left: 25vw;
+  left: 10vw;
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   align-items: center;
   gap: 1vh;
   z-index: 900;
-  width: 300px; /* fixed width large screen */
+  width: 300px;
 }
+
 
 .square {
   width: 300px;
@@ -74,17 +74,16 @@
   z-index: 1;
 }
 
-/* Name card */
 .nameCard {
   background: #f3f3f3;
   border: 3px solid #783f04;
   border-radius: 12px;
   padding: 0.4rem 1rem;
-  width: 220px; /* fixed width large screen */
+  width: 220px;
   box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
   text-align: center;
   font-size: 1.1rem;
-  box-sizing: border-box; /* include padding and border in width */
+  box-sizing: border-box;
 }
 
 /* Player name card above square with higher z-index */
@@ -170,11 +169,27 @@
     transform: translate(0, 0);
   }
   50% {
-    transform: translate(400px, -150px);
+    transform: translate(400px);
   }
   100% {
     transform: translate(0, 0);
   }
+}
+
+@keyframes enemyAttackMove {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-200px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+.enemyAttack {
+  animation: enemyAttackMove 0.5s ease forwards;
 }
 
 .square.attack {
@@ -231,13 +246,9 @@
     max-width: 140px;
     min-width: 100px;
   }
-  .opponentContainer {
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    max-width: calc(100px * 3 + 1rem * 2);
-  }
 
   .enemyCard {
-    max-width: 100px;
+    max-width: 200px;
   }
 
   .circle,
@@ -287,12 +298,13 @@
 }
 
 .opponentContainer {
-  display: grid;
+  display: flex;
+  flex-direction: row-reverse;
   grid-template-columns: repeat(3, 120px);
   gap: 1.5rem; /* Increase this to add space between cards */
   position: fixed;
   bottom: 25vh;
-  right: 15vw;
+  right: 8vw;
   max-width: calc(120px * 3 + 2rem * 2);
   width: max-content;
   box-sizing: border-box;
@@ -331,7 +343,7 @@ html, body {
 }
 
 .enemyCard .nameCard {
-  max-width: 120px;
+  max-width: 150px;
   margin: 0 auto;
   font-size: 0.9rem;
   padding: 0.3rem 0.6rem;
@@ -461,8 +473,8 @@ html, body {
 }
 
 .enemyImage {
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   object-fit: contain;
   margin: 0 auto;
   display: block;

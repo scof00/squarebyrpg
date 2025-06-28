@@ -1,17 +1,18 @@
 // Enemies.jsx
 import React from "react";
 import "../../styles/combat.css"
-export const Enemies = ({ enemies, selectedEnemyIndex, onSelectEnemy }) => {
+export const Enemies = ({ enemies, selectedEnemyIndex, onSelectEnemy, attackingEnemyIndex }) => {
   return (
     <div className="opponentContainer">
       {enemies.map((enemy, i) => {
         const percent = (enemy.currentHP / enemy.health) * 100;
         const isSelected = i === selectedEnemyIndex;
+        const isAttacking = i === attackingEnemyIndex;
 
         return (
           <div
             key={enemy.id}
-            className={`enemyCard ${isSelected ? "selected" : ""}`}
+            className={`enemyCard ${isSelected ? "selected" : ""} ${isAttacking ? "enemyAttack" : ""}`}
             onClick={() => onSelectEnemy(i)}
           >
             {enemy.image ? (
