@@ -1,22 +1,34 @@
-import { ScribBehavior } from "./ScribBehavior"
+import { DragonBehavior } from "./DragonBehavior";
+import { KnightBehavior } from "./KnightBehavior";
+import { ScribBehavior } from "./ScribBehavior";
+import { SmudgeBehavior } from "./SmudgeBehavior";
 
-export const EnemyBehaviorSorter = (enemy, setPlayerHealth, playerHealth) => {
-    switch (enemy.type) {
-      case "Slime":
-        ScribBehavior(enemy, setPlayerHealth, playerHealth)
-        console.log("Scrib attacked")
-        break;
-      case "Ogre":
-        handleOgreBehavior(enemy);
-        break;
-      case "Mage":
-        handleMageBehavior(enemy);
-        break;
-      case "Healer":
-        handleHealerBehavior(enemy);
-        break;
-      // Add more types as needed
-      default:
-        handleDefaultBehavior(enemy);
-    }
+export const EnemyBehaviorSorter = async (
+  enemy,
+  setPlayerHealth,
+  playerHealth
+) => {
+  switch (enemy.type) {
+    case "Slime":
+      ScribBehavior(enemy, setPlayerHealth, playerHealth);
+      break;
+    case "Ogre":
+      handleOgreBehavior(enemy, setPlayerHealth, playerHealth);
+      break;
+    case "Mage":
+      handleMageBehavior(enemy, setPlayerHealth, playerHealth);
+      break;
+    case "Healer":
+      handleHealerBehavior(enemy, setPlayerHealth, playerHealth);
+      break;
+    case "Dragon":
+      DragonBehavior(enemy, setPlayerHealth, playerHealth);
+      break;
+    case "Knight":
+      KnightBehavior(enemy, setPlayerHealth, playerHealth);
+      break;
+    case "Plinth":
+      SmudgeBehavior(enemy, setPlayerHealth, playerHealth);
+      break;
+  }
 };

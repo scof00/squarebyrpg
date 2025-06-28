@@ -17,6 +17,7 @@ export const CombatGeneric = () => {
   const [isPlayerTurn, setIsPlayerTurn] = useState(true);
   const [playerHealth, setPlayerHealth] = useState(100);
   const [playerMaxHealth, setPlayerMaxHealth] = useState(100);
+  const [round, setRound] = useState(1);
 
   const navigate = useNavigate();
   const hasResolved = useRef(false);
@@ -40,7 +41,7 @@ export const CombatGeneric = () => {
     audio.play();
   };
 
-  const playerHealthPercent = (playerHealth / 100) * 100;
+  const playerHealthPercent = (playerHealth / playerMaxHealth) * 100;
 
   const applyDamage = (amount) => {
     console.log("Damage:", amount);
@@ -86,36 +87,40 @@ export const CombatGeneric = () => {
     }, 500);
   };
 
-  const handlePlayerAction = () => {
+  const handlePlayerAction = async () => {
     setPlayerActionsLeft((prev) => {
       const remaining = prev - 1;
       if (remaining <= 0) {
         // Switch to enemy turn after player finishes
         setIsPlayerTurn(false);
-        setTurn((prev) => prev + 1);
-        setTimeout(() => enemyTurn(), 1000); // slight delay to simulate enemy thinking
+        setTimeout(() => enemyTurn(), 1500); // slight delay to simulate enemy thinking
       }
       return remaining;
     });
   };
 
-  const enemyTurn = () => {
+  const isEnemyTurnRunning = useRef(false);
+
+  const enemyTurn = async () => {
+    if (isEnemyTurnRunning.current) return;
+  isEnemyTurnRunning.current = true;
+    console.log("Enemy Turn Started");
     // Example enemy behavior
-    enemies.forEach((enemy) => {
+    for (const enemy of enemies) {
       if (enemy.currentHP > 0) {
-        // enemy attack logic here (e.g., reduce player HP)
-        EnemyBehaviorSorter(enemy, setPlayerHealth, playerHealth);
+        await EnemyBehaviorSorter(enemy, setPlayerHealth, playerHealth);
+        await new Promise((res) => setTimeout(res, 500));
       }
-    });
+    }
 
     // Wait for attacks to visually/temporally finish (if needed)
     setTimeout(() => {
       // Increment turn number
-      setTurn((prev) => prev + 1);
-
+      setRound((prev) => prev + 1);
       // Reset player state
       setPlayerActionsLeft(2);
       setIsPlayerTurn(true);
+      isEnemyTurnRunning.current = false;
     }, 1000); // delay to simulate enemy animations
   };
 
@@ -123,7 +128,7 @@ export const CombatGeneric = () => {
     <div className="genericCombat">
       <Button onClick={() => navigate("/")}>Home</Button>
       <h1 className="combatTitle">
-        ⚔︎ Turn: {turn} - {isPlayerTurn ? "Player's Turn" : "Enemy's Turn"} ⚔︎
+        ⚔︎ Round: {round} - {isPlayerTurn ? "Player's Turn" : "Enemy's Turn"} ⚔︎
       </h1>
 
       {/* ENEMIES HERE */}
@@ -145,10 +150,10 @@ export const CombatGeneric = () => {
                 transition: "width 0.5s ease",
               }}
             />
+          </div>
             <div className="hpNumbers">
               {playerHealth} / {playerMaxHealth}
             </div>
-          </div>
         </div>
       </div>
 
