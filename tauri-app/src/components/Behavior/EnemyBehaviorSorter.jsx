@@ -1,5 +1,6 @@
 import { DragonBehavior } from "./DragonBehavior";
 import { KnightBehavior } from "./KnightBehavior";
+import { MageBehavior } from "./MageBehavior";
 import { ScribBehavior } from "./ScribBehavior";
 import { SmudgeBehavior } from "./SmudgeBehavior";
 
@@ -16,7 +17,7 @@ export const EnemyBehaviorSorter = async (
       handleOgreBehavior(enemy, setPlayerHealth, playerHealth);
       break;
     case "Mage":
-      handleMageBehavior(enemy, setPlayerHealth, playerHealth);
+      MageBehavior(enemy, setPlayerHealth, playerHealth);
       break;
     case "Healer":
       handleHealerBehavior(enemy, setPlayerHealth, playerHealth);

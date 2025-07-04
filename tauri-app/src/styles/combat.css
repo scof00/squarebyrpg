@@ -67,8 +67,8 @@
 
 
 .square {
-  width: 350px;
-  height: 450px;
+  width: 400px;
+  height: 400px;
   position: relative;
   z-index: 1;
 }
@@ -477,4 +477,31 @@ html, body {
   object-fit: contain;
   margin: 0 auto;
   display: block;
+}
+
+/* Controller selection highlighting */
+.combatOption.controller-selected {
+  border: 2px solid #ffff00;
+  box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+  background-color: rgba(255, 255, 0, 0.1);
+  transform: scale(1.05);
+  transition: all 0.2s ease;
+}
+
+/* Enemy controller highlighting - you'll need to add this class to your enemy components */
+.enemy.controller-highlight {
+  border: 2px solid #ff6b6b;
+  box-shadow: 0 0 15px rgba(255, 107, 107, 0.6);
+  transform: scale(1.05);
+  transition: all 0.2s ease;
+}
+
+/* Optional: Add a subtle animation to make it more obvious */
+.controller-selected {
+  animation: controller-pulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes controller-pulse {
+  0% { box-shadow: 0 0 5px rgba(255, 255, 0, 0.5); }
+  100% { box-shadow: 0 0 15px rgba(255, 255, 0, 0.8); }
 }

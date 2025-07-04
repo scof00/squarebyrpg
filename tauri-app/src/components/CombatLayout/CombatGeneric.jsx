@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Enemies } from "./Enemies"; // import it here
 import { getRandomEnemiesByDifficulty } from "../../Utils/enemyDB";
 import { EnemyBehaviorSorter } from "../Behavior/EnemyBehaviorSorter";
+import useCombatController from "../../Utils/useCombat";
 
 export const CombatGeneric = () => {
   const [enemies, setEnemies] = useState([]);
@@ -23,6 +24,38 @@ export const CombatGeneric = () => {
   const navigate = useNavigate();
   const hasResolved = useRef(false);
 
+  // Combat options array for easier management
+  const combatOptions = [
+    { label: "Attack", action: handleAttackClick },
+    { label: "Defend", action: () => console.log("Defend") },
+    { label: "Item", action: () => console.log("Item") },
+    { label: "Run", action: () => navigate("/") }
+  ];
+
+  // Controller support
+  const {
+    focus,
+    selectedOptionIndex,
+    selectedEnemyIndex: controllerSelectedEnemyIndex,
+    setFocus
+  } = useCombatController({
+    numEnemies: enemies.length,
+    numOptions: combatOptions.length,
+    onConfirmAction: (optionIndex) => {
+      if (combatOptions[optionIndex]) {
+        combatOptions[optionIndex].action();
+      }
+    },
+    onConfirmEnemy: (enemyIndex) => {
+      setSelectedEnemyIndex(enemyIndex);
+    },
+    onCancel: () => {
+      console.log("Cancel pressed");
+    },
+    playerTurnActive: isPlayerTurn && !isAttacking
+  });
+
+  // Load enemies and initialize selection
   useEffect(() => {
     const fetchEnemies = async () => {
       const count = Math.floor(Math.random() * 3) + 3;
@@ -32,10 +65,22 @@ export const CombatGeneric = () => {
         currentHP: e.health ?? 50,
       }));
       setEnemies(withHP);
+      
+      // Set initial selection to first enemy (index 0)
+      if (withHP.length > 0) {
+        setSelectedEnemyIndex(0);
+      }
     };
 
     fetchEnemies();
   }, []);
+
+  // Sync controller enemy selection with component state
+  useEffect(() => {
+    if (controllerSelectedEnemyIndex !== null) {
+      setSelectedEnemyIndex(controllerSelectedEnemyIndex);
+    }
+  }, [controllerSelectedEnemyIndex]);
 
   const playSwordSound = () => {
     const audio = new Audio("/sounds/sword-swing.mp3");
@@ -69,11 +114,11 @@ export const CombatGeneric = () => {
     });
   };
 
-  const handleAttackClick = () => {
+  function handleAttackClick() {
     if (!isAttacking && selectedEnemyIndex !== null) {
       setIsAttacking(true);
     }
-  };
+  }
 
   const handleAttackResolved = (damage) => {
     if (hasResolved.current) return;
@@ -110,15 +155,20 @@ export const CombatGeneric = () => {
     if (isEnemyTurnRunning.current) return;
     isEnemyTurnRunning.current = true;
 
-    for (let i = 0; i < enemies.length; i++) {
-      const enemy = enemies[i];
-      if (enemy.currentHP > 0) {
-        setAttackingEnemyIndex(i);
-        playEnemySound();
-        await EnemyBehaviorSorter(enemy, setPlayerHealth, playerHealth);
-        await new Promise((res) => setTimeout(res, 600));
-        setAttackingEnemyIndex(null);
-      }
+    // Get current alive enemies
+    const currentEnemies = enemies.filter(enemy => enemy.currentHP > 0);
+    
+    // Process each alive enemy sequentially
+    for (let i = 0; i < currentEnemies.length; i++) {
+      const enemy = currentEnemies[i];
+      // Find the original index for visual effects
+      const originalIndex = enemies.findIndex(e => e === enemy);
+      
+      setAttackingEnemyIndex(originalIndex);
+      playEnemySound();
+      await EnemyBehaviorSorter(enemy, setPlayerHealth, playerHealth);
+      await new Promise((res) => setTimeout(res, 600));
+      setAttackingEnemyIndex(null);
     }
 
     setTimeout(() => {
@@ -136,16 +186,24 @@ export const CombatGeneric = () => {
         ⚔︎ Round: {round} - {isPlayerTurn ? "Player's Turn" : "Enemy's Turn"} ⚔︎
       </h1>
 
+      {/* Debug info for controller state */}
+      {process.env.NODE_ENV === 'development' && (
+        <div style={{ position: 'absolute', top: '10px', right: '10px', background: 'rgba(0,0,0,0.5)', color: 'white', padding: '5px', fontSize: '12px' }}>
+          Focus: {focus} | Option: {selectedOptionIndex} | Enemy: {selectedEnemyIndex} | Controller Enemy: {controllerSelectedEnemyIndex}
+        </div>
+      )}
+
       {/* ENEMIES HERE */}
       <Enemies
         enemies={enemies}
         selectedEnemyIndex={selectedEnemyIndex}
         onSelectEnemy={setSelectedEnemyIndex}
         attackingEnemyIndex={attackingEnemyIndex}
+        controllerHighlight={null}
       />
 
       <div className="playerContainer">
-        <img className={`square ${attackAnimation ? "attack" : ""}`}src="../../public/images/Squareby.svg"></img>
+        <img className={`square ${attackAnimation ? "attack" : ""}`} src="../../public/images/Squareby.svg"></img>
         <div className="nameCard playerNameCard">
           <div className="pokemonName">Squareby</div>
           <div className="healthBar">
@@ -164,18 +222,21 @@ export const CombatGeneric = () => {
       </div>
 
       <div className="combatOptions">
-        <Button
-          className="combatOption"
-          onClick={handleAttackClick}
-          disabled={isAttacking || selectedEnemyIndex === null || isPlayerTurn === false}
-        >
-          Attack
-        </Button>
-        <Button className="combatOption">Defend</Button>
-        <Button className="combatOption">Item</Button>
-        <Button className="combatOption" onClick={() => navigate("/")}>
-          Run
-        </Button>
+        {combatOptions.map((option, index) => (
+          <Button
+            key={index}
+            className={`combatOption ${
+              focus === "menu" && selectedOptionIndex === index ? "controller-selected" : ""
+            }`}
+            onClick={option.action}
+            disabled={
+              (index === 0 && (isAttacking || selectedEnemyIndex === null || !isPlayerTurn)) ||
+              (!isPlayerTurn && index !== 3)
+            }
+          >
+            {option.label}
+          </Button>
+        ))}
       </div>
 
       <AttackSequence
