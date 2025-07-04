@@ -145,7 +145,7 @@ export const CombatGeneric = () => {
       />
 
       <div className="playerContainer">
-        <div className={`square ${attackAnimation ? "attack" : ""}`}></div>
+        <img className={`square ${attackAnimation ? "attack" : ""}`}src="../../public/images/Squareby.svg"></img>
         <div className="nameCard playerNameCard">
           <div className="pokemonName">Squareby</div>
           <div className="healthBar">
@@ -167,7 +167,7 @@ export const CombatGeneric = () => {
         <Button
           className="combatOption"
           onClick={handleAttackClick}
-          disabled={isAttacking || selectedEnemyIndex === null}
+          disabled={isAttacking || selectedEnemyIndex === null || isPlayerTurn === false}
         >
           Attack
         </Button>

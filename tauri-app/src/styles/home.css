@@ -60,3 +60,10 @@
   color: white;
   border-color: black;
 }
+
+.homePage__button.selected {
+  background-color: #ffcc00;
+  color: black;
+  font-weight: bold;
+  outline: 2px solid #ffaa00;
+}
