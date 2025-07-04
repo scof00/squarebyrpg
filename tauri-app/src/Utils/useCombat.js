@@ -69,9 +69,20 @@ export default function useCombatController({
       }
     } else if (event.type === "axis" && !inputLockRef.current) {
       if (focus === "menu") {
+        // Vertical movement (up/down) in menu
         if (event.axis === 1) {
           setSelectedOptionIndex((prev) => {
             const next = prev + event.direction;
+            if (next < 0) return numOptions - 1;
+            if (next >= numOptions) return 0;
+            return next;
+          });
+          lockInput();
+        }
+        // Horizontal movement (left/right) in menu
+        else if (event.axis === 0) {
+          setSelectedOptionIndex((prev) => {
+            const next = event.direction > 0 ? prev + 1 : prev - 1;
             if (next < 0) return numOptions - 1;
             if (next >= numOptions) return 0;
             return next;
@@ -103,6 +114,17 @@ export default function useCombatController({
           lockInput();
         }
       }
+    } else if (event.type === "dpad" && !inputLockRef.current) {
+      if (focus === "menu") {
+        // D-pad left/right movement in menu
+        setSelectedOptionIndex((prev) => {
+          const next = event.direction === "right" ? prev + 1 : prev - 1;
+          if (next < 0) return numOptions - 1;
+          if (next >= numOptions) return 0;
+          return next;
+        });
+        lockInput();
+      }
     }
   };
 
@@ -133,8 +155,10 @@ export default function useCombatController({
         }
       });
 
-      // Axis threshold detection for joystick (vertical movement in menu)
+      // Axis threshold detection for joystick and menu navigation
       const threshold = 0.5;
+      
+      // Vertical movement (joystick up/down) in menu
       [1].forEach((axis) => {
         const now = axes[axis];
         const was = lastState.current.axes[axis] || 0;
@@ -144,6 +168,34 @@ export default function useCombatController({
           handleGamepadAction({ type: "axis", axis, direction: -1 });
         }
       });
+
+      // Horizontal movement (joystick left/right) in menu
+      [0].forEach((axis) => {
+        const now = axes[axis];
+        const was = lastState.current.axes[axis] || 0;
+        if (now > threshold && !(was > threshold)) {
+          handleGamepadAction({ type: "axis", axis: 0, direction: 1 }); // Right
+        } else if (now < -threshold && !(was < -threshold)) {
+          handleGamepadAction({ type: "axis", axis: 0, direction: -1 }); // Left
+        }
+      });
+
+      // D-pad detection (axis 9, starting value 3.285)
+      const dpadAxis = 9;
+      const dpadNow = axes[dpadAxis];
+      const dpadWas = lastState.current.axes[dpadAxis] || 3.285;
+      const dpadThreshold = 0.5;
+      
+      if (Math.abs(dpadNow - dpadWas) > dpadThreshold) {
+        // D-pad values typically: 3.285 (neutral), other values for directions
+        if (dpadNow < 3.285 - dpadThreshold) {
+          handleGamepadAction({ type: "dpad", direction: "left" });
+        } else if (dpadNow > 3.285 + dpadThreshold) {
+          handleGamepadAction({ type: "dpad", direction: "right" });
+        }
+        // You can add up/down detection here if needed
+        // Different controllers may have different dpad mappings
+      }
 
       // Bumper detection as axes (L1/R1 are often axes 6/7)
       const bumperThreshold = 0.5;
