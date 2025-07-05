@@ -13,13 +13,13 @@
   background-position: center;
   box-sizing: border-box;
   cursor: pointer;
+  font-family: 'Black Chancery', cursive, serif;
 }
 
 .dialog-box {
   width: 800px;
   height: 200px;
   background-color: rgba(0, 0, 0, 0.8);
-  color: #fff;
   border: 2px solid #888;
   border-radius: 12px;
   padding: 1rem 1.5rem;
@@ -30,18 +30,26 @@
   flex-direction: column;
   justify-content: space-between;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+   border-style: outset;
+  border-radius: 25px;
+  border-color: #783f04;
+  border-width: 5px;
+  background-color: #E5DFCF;
 }
 
 .speaker-name {
   position: absolute;
   top: -1.4rem;
   left: 1rem;
-  background: #222;
   padding: 0 0.6rem;
   font-weight: bold;
-  color: #ffc107;
   border-radius: 6px 6px 0 0;
   font-size: 1rem;
+   border-style: outset;
+  border-radius: 10px;
+  border-color: #783f04;
+  border-width: 5px;
+  background-color: #E5DFCF;
 }
 
 .dialogue-text {
@@ -52,6 +60,5 @@
 
 .continue-hint {
   font-size: 0.9rem;
-  opacity: 0.6;
   text-align: right;
 }

@@ -59,7 +59,7 @@ export function SceneDisplay({ dialogue, onComplete, background }) {
       <div className="dialog-box">
         <div className="speaker-name">{currentDialogue.speaker}</div>
         <div className="dialogue-text">{displayText}</div>
-        {!isTyping && <div className="continue-hint">[Click to continue]</div>}
+        {!isTyping && <div className="continue-hint">Click to continue...</div>}
       </div>
     </div>
   );
