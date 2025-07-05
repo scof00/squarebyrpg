@@ -10,6 +10,7 @@
     "fs:allow-applocaldata-write",
     "fs:allow-applocaldata-read",
     "sql:allow-execute",
+    "core:window:allow-close",
     {
       "identifier": "fs:scope",
       "allow": [

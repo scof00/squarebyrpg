@@ -1,0 +1,102 @@
+/* Gear Button */
+.settings-button {
+  position: fixed;
+  top: 1rem;
+  left: 1rem; /* moved from right to left */
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 2100;
+  color: white;
+}
+
+
+/* Fullscreen Overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+/* Settings Menu Container */
+.settings-menu {
+  background: #1a1a1a;
+  border: 2px solid #555;
+  border-radius: 8px;
+  padding: 2rem;
+  color: white;
+  min-width: 300px;
+  position: relative;
+  text-align: center;
+}
+
+/* Close X Button */
+.close-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+/* Option Buttons */
+.menu-options {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0 0 0;
+}
+
+.menu-options li {
+  margin: 1rem 0;
+}
+
+.menu-options button {
+  background: #333;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  color: white;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s ease;
+}
+
+.menu-options button:hover {
+  background: #555;
+}
+
+.confirm-text {
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.confirm-buttons {
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
+}
+
+.confirm-buttons button {
+  background: #444;
+  border: none;
+  padding: 0.5rem 1rem;
+  color: white;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.confirm-buttons button:hover {
+  background: #666;
+}

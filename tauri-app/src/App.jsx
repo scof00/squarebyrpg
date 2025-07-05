@@ -1,12 +1,11 @@
 // App.jsx
 import React from "react";
-import { createRoot } from "react-dom/client";
-import { initGameData } from "./Utils/initFiles";
 import DevPanel from "./Components/DevPanel";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Outlet } from "react-router-dom";
 import { Home } from "./components/Home";
 import { CombatGeneric } from "./components/CombatLayout/CombatGeneric";
 import { initDatabase } from "./Utils/databaseInit";
+import { SettingsDisplay } from "./components/Settings";
 
 export function App() {
   React.useEffect(() => {
@@ -15,9 +14,20 @@ export function App() {
 
   return (
     <Routes>
+      <Route
+      path="/"
+      element={
+        <>
+        <SettingsDisplay/>
+        <Outlet />
+        </>
+      }
+      >
+
       <Route path="/" element={<Home />} />
       <Route path="/devPanel" element={<DevPanel />} />
       <Route path="/combat" element={<CombatGeneric />} />
+      </Route>
     </Routes>
   );
 }

@@ -42,6 +42,9 @@
       "default": {
         "load": ["sqlite:game.db"]
       }
-    }
+    },
+    "window": {
+        "allow-close": true
+      }
   }
 }

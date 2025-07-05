@@ -181,7 +181,6 @@ export const CombatGeneric = () => {
 
   return (
     <div className="genericCombat">
-      <Button onClick={() => navigate("/")}>Home</Button>
       <h1 className="combatTitle">
         ⚔︎ Round: {round} - {isPlayerTurn ? "Player's Turn" : "Enemy's Turn"} ⚔︎
       </h1>
