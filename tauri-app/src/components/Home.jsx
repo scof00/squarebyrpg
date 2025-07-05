@@ -8,9 +8,10 @@ export const Home = () => {
   const navigate = useNavigate();
   const goToDevPanel = () => navigate("/devPanel");
   const goToCombat = () => navigate("/combat");
+  const gameStart = () => navigate("/Scene1");
 
   const buttons = [
-    { label: "New Game" },
+    { label: "New Game", onClick: gameStart },
     { label: "Continue" },
     { label: "Collection" },
     { label: "Options" },

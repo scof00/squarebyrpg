@@ -6,6 +6,7 @@ import { Home } from "./components/Home";
 import { CombatGeneric } from "./components/CombatLayout/CombatGeneric";
 import { initDatabase } from "./Utils/databaseInit";
 import { SettingsDisplay } from "./components/Settings";
+import { Scene1 } from "./components/GameFlow/Scene1";
 
 export function App() {
   React.useEffect(() => {
@@ -27,6 +28,7 @@ export function App() {
       <Route path="/" element={<Home />} />
       <Route path="/devPanel" element={<DevPanel />} />
       <Route path="/combat" element={<CombatGeneric />} />
+      <Route path="/Scene1" element={<Scene1 />}/>
       </Route>
     </Routes>
   );
