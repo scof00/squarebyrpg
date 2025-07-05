@@ -1,14 +1,22 @@
-/* Gear Button */
 .settings-button {
   position: fixed;
   top: 1rem;
-  left: 1rem; /* moved from right to left */
-  background: none;
-  border: black;
+  left: 1rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   z-index: 2100;
-  color: white;
+  border-style: outset;
+  border-radius: 15px;
+  border-color: #783f04;
+  border-width: 3px;
+  background-color: #E5DFCF;
+  padding: 0;
 }
+
 
 
 /* Fullscreen Overlay */
