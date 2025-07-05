@@ -1,0 +1,57 @@
+/* SceneDisplay.css */
+
+.scene-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  background-color: black;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 2rem;
+  background-size: cover;
+  background-position: center;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.dialog-box {
+  width: 800px;
+  height: 200px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border: 2px solid #888;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  box-sizing: border-box;
+  position: relative;
+  font-size: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+}
+
+.speaker-name {
+  position: absolute;
+  top: -1.4rem;
+  left: 1rem;
+  background: #222;
+  padding: 0 0.6rem;
+  font-weight: bold;
+  color: #ffc107;
+  border-radius: 6px 6px 0 0;
+  font-size: 1rem;
+}
+
+.dialogue-text {
+  flex-grow: 1;
+  white-space: pre-wrap;
+  line-height: 1.4;
+}
+
+.continue-hint {
+  font-size: 0.9rem;
+  opacity: 0.6;
+  text-align: right;
+}
