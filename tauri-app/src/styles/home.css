@@ -53,6 +53,7 @@
   transition: background-color 0.3s ease, color 0.3s ease;
   min-width: 180px;
   box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+  font-family: 'Black Chancery', cursive, serif;
 }
 
 .homePage__button:hover {

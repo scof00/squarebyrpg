@@ -185,13 +185,6 @@ export const CombatGeneric = () => {
         ⚔︎ Round: {round} - {isPlayerTurn ? "Player's Turn" : "Enemy's Turn"} ⚔︎
       </h1>
 
-      {/* Debug info for controller state */}
-      {process.env.NODE_ENV === 'development' && (
-        <div style={{ position: 'absolute', top: '10px', right: '10px', background: 'rgba(0,0,0,0.5)', color: 'white', padding: '5px', fontSize: '12px' }}>
-          Focus: {focus} | Option: {selectedOptionIndex} | Enemy: {selectedEnemyIndex} | Controller Enemy: {controllerSelectedEnemyIndex}
-        </div>
-      )}
-
       {/* ENEMIES HERE */}
       <Enemies
         enemies={enemies}
