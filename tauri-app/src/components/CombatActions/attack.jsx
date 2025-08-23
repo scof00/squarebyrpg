@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import "../../styles/combat.css";
-import { modifyAttack } from "../CombatActions/attackModification"; // import your function
+import { createRollDie, modifyAttack } from "../CombatActions/attackModification";
 
 const diceFaces = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
 
@@ -27,39 +27,17 @@ export const AttackSequence = ({ trigger, onResolve, onDismiss }) => {
     new Audio("/sounds/sword-slice.mp3").play();
   };
 
-  const rollDie = (index, delay) =>
-    new Promise((resolve) => {
-      let rollCount = 0;
-      const interval = setInterval(() => {
-        const val = Math.ceil(Math.random() * 6);
-        setDiceValues((prev) => {
-          const updated = [...prev];
-          updated[index] = val;
-          return updated;
-        });
-        if (rollCount === 0) playDiceSound();
-        rollCount++;
-        if (rollCount >= 10) {
-          clearInterval(interval);
-          resolve(val);
-        }
-      }, delay);
-    });
-
   const runRoll = async () => {
-    setDiceValues([null, null, null]); // clear dice faces
-    setModBreakdown([]); // clear modifier breakdown lines
+    setDiceValues([null, null, null]);
+    setModBreakdown([]);
     setFinalTotal(null);
-    const results = [];
-    for (let i = 0; i < 3; i++) {
-      const result = await rollDie(i, 60);
-      results.push(result);
-    }
 
-    const baseTotal = results.reduce((a, b) => a + b, 0);
-    const { breakdown, total } = modifyAttack(baseTotal);
+    const rollDie = createRollDie(setDiceValues, playDiceSound);
 
-    setModBreakdown([`Base Roll: ${baseTotal}`, ...breakdown]);
+    const { results, breakdown, total } = await modifyAttack(rollDie);
+
+    setDiceValues(results);
+    setModBreakdown(breakdown);
     setFinalTotal(total);
 
     playSwordSound();
