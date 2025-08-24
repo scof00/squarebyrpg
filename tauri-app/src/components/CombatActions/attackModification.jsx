@@ -44,24 +44,30 @@ export async function modifyAttack(rollDie) {
 
   const inventory = [
     "Deux Die Doubler",
-    "Oops all Odds",
+    "Eeps all Evens",
     "No Ones",
-    "Gleaming Blade"
+    "Gleaming Blade",
+    "NSBU",
   ];
-  
+
   //Dice roll and dice modifiers
   for (let i = 0; i < 3; i++) {
     const blockedNumbers = [];
     if (inventory.includes("No Ones")) blockedNumbers.push(1);
     if (inventory.includes("Oops all Odds")) blockedNumbers.push(2, 4, 6);
     if (inventory.includes("Eeps all Evens")) blockedNumbers.push(1, 3, 5);
-    const result = await rollDie(i, 60, blockedNumbers);
+    let result = await rollDie(i, 60, blockedNumbers);
     results.push(result);
-  }
 
-  breakdown.push(
-    `Base Roll: ${results.join(" + ")} = ${results.reduce((a, b) => a + b, 0)}`
-  );
+    if (inventory.includes("NSBU")) {
+      while (result === 6) {
+        const extra = Math.ceil(Math.random() * 6);
+        results.push(extra);
+        breakdown.push(`NSBU triggered: +${extra}`);
+        result = extra; // check if this one also explodes
+      }
+    }
+  }
 
   modifiedResults = [...results];
 
@@ -70,7 +76,7 @@ export async function modifyAttack(rollDie) {
     modifiedResults[1] !== undefined
   ) {
     const original = modifiedResults[1];
-    modifiedResults[1] *= 1;
+    modifiedResults[1] *= 2;
     breakdown.push(`Deux Die Doubler: ${original} → ${modifiedResults[1]}`);
   }
 
@@ -94,7 +100,6 @@ export async function modifyAttack(rollDie) {
     breakdown.push(`Gleaming Blade: ${total} → ${total * 2}`);
     total *= 2;
   }
-
 
   return { results, breakdown, total };
 }
