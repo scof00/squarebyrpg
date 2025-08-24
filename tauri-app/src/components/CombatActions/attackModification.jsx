@@ -92,11 +92,11 @@ export async function modifyAttack(rollDie) {
   }
   if (inventory.includes("Improved Whetstone")) {
     breakdown.push("Improved Whetstone: +2");
-    total += 2;
+    total += 3;
   }
   if (inventory.includes("Master Whetstone")) {
     breakdown.push("Master Whetstone: +3");
-    total += 3;
+    total += 5;
   }
   //Multiplicative Modifiers
   if (inventory.includes("Gleaming Blade")) {
