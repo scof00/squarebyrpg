@@ -1,6 +1,9 @@
 import { useEffect, useState, useRef } from "react";
 import "../../styles/combat.css";
-import { createRollDie, modifyAttack } from "../CombatActions/attackModification";
+import {
+  createRollDie,
+  modifyAttack,
+} from "../CombatActions/attackModification";
 
 const diceFaces = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
 
@@ -28,7 +31,7 @@ export const AttackSequence = ({ trigger, onResolve, onDismiss }) => {
   };
 
   const runRoll = async () => {
-    setDiceValues([null, null, null]);
+    setDiceValues([]);
     setModBreakdown([]);
     setFinalTotal(null);
 
@@ -59,11 +62,20 @@ export const AttackSequence = ({ trigger, onResolve, onDismiss }) => {
     <div className="dicePopupOverlay">
       <div className="dicePopupContent">
         <div className="diceRow">
-          {diceValues.map((val, i) => (
-            <div key={i} className="die">
-              {val !== null ? diceFaces[val - 1] : "?"}
-            </div>
-          ))}
+          {diceValues.map((dieData, i) => {
+            const isObject = typeof dieData === "object" && dieData !== null;
+            const value = isObject ? dieData.value : dieData;
+            const isExploded = isObject ? dieData.isExploded : false;
+
+            return (
+              <div
+                key={i}
+                className={`die ${isExploded ? "exploded-die" : ""}`}
+              >
+                {value !== null ? diceFaces[value - 1] : "?"}
+              </div>
+            );
+          })}
         </div>
 
         <div className="diceBreakdown" style={{ marginTop: "1rem" }}>

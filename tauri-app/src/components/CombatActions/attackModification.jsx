@@ -13,10 +13,10 @@ export const createRollDie = (setDiceValues, playDiceSound) => {
           val = Math.ceil(Math.random() * 6);
         } while (blocked.includes(val));
 
-        // update UI dice
+        // update UI dice - keep the object structure
         setDiceValues((prev) => {
           const updated = [...prev];
-          updated[index] = val;
+          updated[index] = { value: val, isExploded: false };
           return updated;
         });
 
@@ -56,20 +56,23 @@ export async function modifyAttack(rollDie) {
     if (inventory.includes("No Ones")) blockedNumbers.push(1);
     if (inventory.includes("Oops all Odds")) blockedNumbers.push(2, 4, 6);
     if (inventory.includes("Eeps all Evens")) blockedNumbers.push(1, 3, 5);
+
     let result = await rollDie(i, 60, blockedNumbers);
-    results.push(result);
+    results.push({ value: result, isExploded: false }); // Track explosion status
 
     if (inventory.includes("NSBU")) {
       while (result === 6) {
         const extra = Math.ceil(Math.random() * 6);
-        results.push(extra);
+        results.push({ value: extra, isExploded: true }); // Mark as exploded
         breakdown.push(`NSBU triggered: +${extra}`);
         result = extra; // check if this one also explodes
       }
     }
   }
 
-  modifiedResults = [...results];
+  // Extract values for calculations but keep original structure for rendering
+  const values = results.map(dieData => dieData.value);
+  modifiedResults = [...values];
 
   if (
     inventory.includes("Deux Die Doubler") &&
@@ -101,5 +104,5 @@ export async function modifyAttack(rollDie) {
     total *= 2;
   }
 
-  return { results, breakdown, total };
+  return { results, breakdown, total }; // results still contains the object structure for rendering
 }

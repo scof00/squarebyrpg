@@ -269,12 +269,12 @@
 }
 
 .exploded-die {
-  background: linear-gradient(135deg, black, red);
-  color: white;
-  border: 2px solid #a00;
-  box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
+  background: linear-gradient(to top, black, red);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent; /* fallback */
 }
-
 
 @keyframes rollDie {
   0% { transform: rotate(0deg) scale(1); }
