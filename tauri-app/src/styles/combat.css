@@ -5,16 +5,17 @@
   font-style: normal;
 }
 
+/* Base container - designed for 1920x1080, will be scaled by your JavaScript */
 .genericCombat {
   position: relative;
-  width: 100vw;
-  height: 100vh;
+  width: 1920px;
+  height: 1080px;
   overflow: hidden;
   font-family: Arial, sans-serif;
-   display: flex;
+  display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 2rem;
+  padding: 32px;
   background-image: url('../../backgrounds/StormyField.jpg');
   background-repeat: no-repeat;
   background-position: center;
@@ -23,56 +24,100 @@
 
 /* Title */
 .combatTitle {
-  position: fixed;
-  top: 2vh;
+  position: absolute;
+  top: 22px; /* 2vh of 1080px */
   left: 50%;
   transform: translateX(-50%);
-  font-size: 2rem;
+  font-size: 32px; /* 2rem equivalent */
   font-weight: bold;
   text-align: center;
   z-index: 1000;
   background-color: #f9f5f0;
-  padding: 0.5rem 1rem;
+  padding: 8px 16px;
   border-radius: 10px;
-   font-family: 'Black Chancery', cursive, serif;
+  font-family: 'Black Chancery', cursive, serif;
 }
 
-/* Opponent container and shape fixed large size */
+.opponentContainer {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-end;
+  gap: 20px;
+  position: absolute;
+  bottom: 280px; /* Moved up slightly */
+  right: 80px; /* Moved further from edge */
+  width: max-content;
+  box-sizing: border-box;
+  padding: 8px;
+  border-radius: 8px;
+  z-index: 900;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  max-width: 1200px; /* Reduced max width */
+}
+
 .enemyCard {
-  padding: 1rem;
+  flex: 0 0 160px;
+  width: 200px;
+  max-width: 200px;
+  box-sizing: border-box;
+  padding: 12px;
   border-radius: 10px;
-  width: 100%;
-  max-width: 180px;
   text-align: center;
   cursor: pointer;
-  transition: transform 0.2s ease, border 0.2s ease;
-}
-
-.enemyCard.selected {
-  border-color: gold;
-  transform: scale(1.05);
-}
-
-
-.circle {
-  width: 200px;
-  height: 200px;
-  background-color: green;
-  border-radius: 50%;
-}
-
-.playerContainer {
-  position: fixed;
-  bottom: 25vh;
-  left: 10vw;
+  transition: transform 0.18s ease, border 0.18s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1vh;
+  border: 2px solid transparent;
+}
+
+.enemyCard.selected {
+  transform: scale(1.05);
+}
+
+.enemyImage {
+  width: 154px; /* 8vw of 1920px */
+  height: 173px; /* 16vh of 1080px */
+  object-fit: contain;
+  margin: 0 auto 8px;
+  display: block;
+}
+
+.enemyCard .circle {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 8px;
+  border-radius: 50%;
+  background-color: green;
+  flex-shrink: 0;
+  display: block;
+  object-fit: contain;
+}
+
+.enemyCard .nameCard {
+  width: 100%;
+  font-size: 15px;
+  padding: 5px 10px;
+  box-sizing: border-box;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: center;
+  background: #f3f3f3;
+  border: 2px solid #783f04;
+  border-radius: 8px;
+}
+
+.playerContainer {
+  position: absolute;
+  bottom: 280px; /* Moved up to match enemies */
+  left: 120px; /* Moved further from edge */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 11px;
   z-index: 900;
   width: 300px;
 }
-
 
 .square {
   width: 400px;
@@ -85,31 +130,28 @@
   background: #f3f3f3;
   border: 3px solid #783f04;
   border-radius: 12px;
-  padding: 0.4rem 1rem;
+  padding: 6px 16px;
   width: 220px;
   box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
   text-align: center;
-  font-size: 1.1rem;
+  font-size: 18px;
   box-sizing: border-box;
-   font-family: 'Black Chancery', cursive, serif;
+  font-family: 'Black Chancery', cursive, serif;
 }
 
-/* Player name card above square with higher z-index */
 .playerNameCard {
   position: relative;
   z-index: 10;
 }
 
-/* Pokemon name text */
 .pokemonName {
   font-weight: bold;
-  font-size: 1.2rem;
-  margin-bottom: 0.4rem;
+  font-size: 19px;
+  margin-bottom: 6px;
 }
 
-/* Health bar */
 .healthBar {
-  width: 90%;  /* slightly smaller than name card for spacing */
+  width: 90%;
   max-width: 100%;
   height: 18px;
   background-color: #bfbfbf;
@@ -121,7 +163,6 @@
   box-sizing: border-box;
 }
 
-/* Health fill with smooth transition */
 .healthFill {
   height: 100%;
   background: linear-gradient(90deg, #4caf50 0%, #8bc34a 100%);
@@ -129,27 +170,26 @@
   width: 100%;
 }
 
-/* Combat options */
 .combatOptions {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 2vh;
+  gap: 16px;
   justify-content: center;
   border-style: outset;
   border-radius: 25px;
   border-color: #783f04;
   border-width: 5px;
   background-color: #E5DFCF;
-  position: fixed;
-  bottom: 5vh;
+  position: absolute;
+  bottom: 60px; /* Moved up from edge */
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
-  padding: 3vh 5vw;
-  max-width: 640px;
-  width: 40vw;
-  min-width: 260px;
-   font-family: 'Black Chancery', cursive, serif;
+  padding: 20px 40px; /* Reduced padding */
+  max-width: 600px;
+  width: 600px; /* Fixed width instead of viewport-based */
+  min-width: 300px; /* Increased min-width */
+  font-family: 'Black Chancery', cursive, serif;
 }
 
 .combatOption {
@@ -158,12 +198,12 @@
   align-items: center;
   border: 2px solid black;
   border-radius: 10px;
-  padding: 1vh 2vw;
+  padding: 11px 38px; /* 1vh 2vw converted */
   font-weight: bold;
   background-color: #fff3e0;
   cursor: pointer;
   transition: background-color 0.2s ease, color 0.2s ease;
-  font-size: 1.1rem;
+  font-size: 18px;
 }
 
 .combatOption:hover {
@@ -178,7 +218,7 @@
     transform: translate(0, 0);
   }
   50% {
-    transform: translate(400px);
+    transform: translate(400px, 0);
   }
   100% {
     transform: translate(0, 0);
@@ -190,7 +230,7 @@
     transform: translate(0, 0);
   }
   50% {
-    transform: translate(-200px);
+    transform: translate(-200px, 0);
   }
   100% {
     transform: translate(0, 0);
@@ -207,18 +247,18 @@
 
 /* Dice container */
 .diceContainer {
-  position: fixed;
+  position: absolute;
   bottom: 50%;
   left: 50%;
   transform: translate(-50%, 50%);
   display: flex;
-  gap: 2rem;
+  gap: 32px;
   z-index: 9999;
 }
 
 /* Dice faces */
 .die {
-  font-size: 6rem;
+  font-size: 96px; /* 6rem equivalent */
   font-family: "Segoe UI Emoji", sans-serif;
   color: #222;
   animation: rollDie 0.6s ease-in-out;
@@ -232,149 +272,46 @@
   100% { transform: rotate(720deg) scale(1); }
 }
 
-/* Dice total popup */
 .diceTotal {
-  position: fixed;
-  bottom: 35%;
+  position: absolute;
+  bottom: 378px; /* 35% of 1080px */
   left: 50%;
   transform: translateX(-50%);
-  font-size: 2rem;
+  font-size: 32px;
   font-weight: bold;
   background: #fff6e3;
-  padding: 1rem 2rem;
+  padding: 16px 32px;
   border: 3px solid #783f04;
   border-radius: 12px;
   box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
   z-index: 9999;
 }
 
-/* Responsive adjustments below 1024px */
-@media (max-width: 1024px) {
-  .playerContainer {
-    width: 20vw;
-    max-width: 140px;
-    min-width: 100px;
-  }
-
-  .enemyCard {
-    max-width: 200px;
-  }
-
-  .circle,
-  .square {
-    width: 100% !important;
-    height: auto !important;
-    aspect-ratio: 1 / 1;
-  }
-
-  .nameCard {
-    width: 100%;
-    max-width: 140px;
-    font-size: 0.9rem;
-    padding: 0.3rem 0.6rem;
-  }
-
-  .healthBar {
-    width: 90%;
-  }
-
-  .combatOptions {
-    width: 90vw;
-    max-width: 400px;
-    padding: 2vh 3vw;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5vh;
-  }
-
-  .combatOption {
-    font-size: 1rem;
-    padding: 1vh 1vw;
-  }
-
-  .die {
-    font-size: 4rem;
-  }
-
-  .diceTotal {
-    font-size: 1.5rem;
-    padding: 0.6rem 1.2rem;
-  }
-}
-
 .enemyCard.selected {
-  border-color: gold;
   transform: scale(1.15);
 }
-
-.opponentContainer {
-  display: flex;
-  flex-direction: row-reverse;
-  grid-template-columns: repeat(3, 120px);
-  gap: 1.5rem; /* Increase this to add space between cards */
-  position: fixed;
-  bottom: 25vh;
-  right: 8vw;
-  max-width: calc(120px * 3 + 2rem * 2);
-  width: max-content;
-  box-sizing: border-box;
-  padding: 0.5rem;
-  border-radius: 8px;
-  z-index: 900;
-}
-
-
 
 html, body {
   overflow-x: hidden;
   overflow-y: hidden;
 }
 
-.enemyCard {
-  padding: 1rem;
-  border-radius: 10px;
-  text-align: center;
-  cursor: pointer;
-  transition: transform 0.2s ease, border 0.2s ease;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.enemyCard .circle {
-  width: 100px;
-  height: 100px;
-  margin: 0 auto 0.5rem;
-  border-radius: 50%;
-  background-color: green;
-  flex-shrink: 0;
-  
-}
-
-.enemyCard .nameCard {
-  max-width: 150px;
-  margin: 0 auto;
-  font-size: 0.9rem;
-  padding: 0.3rem 0.6rem;
-  box-sizing: border-box;
-}
-
 .overlay {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.75); /* translucent black */
+  width: 1920px;
+  height: 1080px;
+  background-color: rgba(0, 0, 0, 0.75);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2000; /* above everything */
+  z-index: 2000;
 }
 
 .proceedButton {
-  font-size: 1.8rem;
-  padding: 1rem 3rem;
+  font-size: 29px;
+  padding: 16px 48px;
   border: none;
   border-radius: 12px;
   background-color: gold;
@@ -389,11 +326,11 @@ html, body {
 }
 
 .dicePopupOverlay {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 1920px;
+  height: 1080px;
   background: rgba(0, 0, 0, 0.75);
   display: flex;
   justify-content: center;
@@ -403,7 +340,7 @@ html, body {
 
 .dicePopupContent {
   background: #fff6e3;
-  padding: 2rem;
+  padding: 32px;
   border-radius: 12px;
   text-align: center;
   box-shadow: 0 0 10px #000;
@@ -414,18 +351,18 @@ html, body {
 .diceRow {
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
-  margin-bottom: 1.2rem;
+  gap: 24px;
+  margin-bottom: 19px;
 }
 
 .diceBreakdown {
-  font-size: 1.1rem;
-  margin-bottom: 1.5rem;
+  font-size: 18px;
+  margin-bottom: 24px;
 }
 
 .dismissButton {
-  padding: 0.8rem 2rem;
-  font-size: 1.2rem;
+  padding: 13px 32px;
+  font-size: 19px;
   background: gold;
   border: none;
   border-radius: 8px;
@@ -435,58 +372,6 @@ html, body {
 
 .dismissButton:hover {
   background: #e6c200;
-}
-.dicePopupOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.7);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.dicePopupContent {
-  background-color: #fffef9;
-  padding: 2rem;
-  border-radius: 20px;
-  box-shadow: 0 0 10px #000;
-  text-align: center;
-}
-
-.diceRow {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.diceBreakdown {
-  margin-top: 1rem;
-  font-size: 1.1rem;
-}
-
-.dismissButton {
-  margin-top: 1.5rem;
-  padding: 0.8rem 2rem;
-  font-size: 1rem;
-  font-weight: bold;
-  background-color: #783f04;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.enemyImage {
-  width: 200px;
-  height: 200px;
-  object-fit: contain;
-  margin: 0 auto;
-  display: block;
 }
 
 /* Controller selection highlighting */
@@ -498,7 +383,6 @@ html, body {
   transition: all 0.2s ease;
 }
 
-/* Enemy controller highlighting - you'll need to add this class to your enemy components */
 .enemy.controller-highlight {
   border: 2px solid #ff6b6b;
   box-shadow: 0 0 15px rgba(255, 107, 107, 0.6);
@@ -506,7 +390,6 @@ html, body {
   transition: all 0.2s ease;
 }
 
-/* Optional: Add a subtle animation to make it more obvious */
 .controller-selected {
   animation: controller-pulse 1s ease-in-out infinite alternate;
 }

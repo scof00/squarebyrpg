@@ -7,70 +7,70 @@
   font-style: normal;
 }
 
-
 .homePage {
-  height: 100vh;         /* full viewport height */
-  width: 100vw;          /* full viewport width */
+  height: 1080px;        /* Fixed height for 1920x1080 */
+  width: 1920px;         /* Fixed width for 1920x1080 */
   margin: 0;             /* remove default margin */
-  padding: 2rem;         /* some padding around */
+  padding: 60px 32px 32px 32px; /* More top padding for title spacing */
   display: flex;
   flex-direction: column;
-  justify-content: center;  /* vertically center */
+  justify-content: flex-start;  /* Start from top instead of center */
   align-items: center;      /* horizontally center */
-  gap: 2rem;
+  gap: 48px;             /* Increased gap for larger elements */
   box-sizing: border-box;   /* include padding in width/height */
   overflow: hidden;         /* no scrollbars */
   background-image: url('../../backgrounds/homeScreenBackground.jpg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover; 
+  position: relative;    /* Add positioning context */
 }
 
 .homeTitle {
   font-family: 'Black Chancery', cursive, serif;
-  font-size: 4rem;
+  font-size: 96px;       /* Increased from 64px */
   color: #4b2e05;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-  /* Optional: add some letter spacing or transform */
+  text-shadow: 3px 3px 6px rgba(0,0,0,0.3); /* Stronger shadow for larger text */
   letter-spacing: 0.05em;
-  /* To give it a subtle scroll parchment vibe */
   background: linear-gradient(135deg, #f9f5e1, #e0d6a7);
-  padding: 0.5rem 1.5rem;
-  border-radius: 12px;
-  border: 3px solid #b8944c;
-  box-shadow: 2px 2px 8px rgba(184,148,76,0.7);
+  padding: 16px 40px;    /* Increased padding for larger title */
+  border-radius: 16px;   /* Slightly larger border radius */
+  border: 4px solid #b8944c; /* Thicker border */
+  box-shadow: 3px 3px 12px rgba(184,148,76,0.8); /* Stronger shadow */
   user-select: none;
+  text-align: center;    /* Ensure text is centered */
+  margin-bottom: 70px;   /* Add space between title and buttons */
 }
 
 .homePage__button {
   cursor: pointer;
-  border: 2px solid black;
-  border-radius: 10px;
+  border: 3px solid black; /* Thicker border */
+  border-radius: 14px;   /* Larger border radius */
   background-color: #fff3e0;
   font-weight: bold;
-  padding: 0.75rem 2rem;
-  font-size: 1.25rem;
+  padding: 20px 50px;    /* Much larger padding */
+  font-size: 28px;       /* Increased from 20px */
   transition: background-color 0.3s ease, color 0.3s ease;
-  min-width: 180px;
-  box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+  min-width: 280px;      /* Increased min-width */
+  box-shadow: 3px 3px 8px rgba(0,0,0,0.15); /* Stronger shadow */
   background: linear-gradient(135deg, #f9f5e1, #e0d6a7);
-  padding: 0.5rem 1.5rem;
-  border-radius: 12px;
-  border: 3px solid #b8944c;
-  box-shadow: 2px 2px 8px rgba(184,148,76,0.7);
+  border-radius: 16px;   /* Override with even larger radius */
+  border: 4px solid #b8944c; /* Thicker decorative border */
+  box-shadow: 3px 3px 12px rgba(184,148,76,0.8); /* Stronger shadow */
   font-family: 'Black Chancery', cursive, serif;
+  text-align: center;    /* Center button text */
 }
 
 .homePage__button:hover {
-  border: 2px solid #e6c200;
-  box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
-  background-color: rgba(255, 255, 0, 0.1);
-  outline: 2px solid #ffaa00
+  border: 4px solid #e6c200; /* Match the thicker border */
+  box-shadow: 0 0 15px rgba(255, 255, 0, 0.6); /* Stronger glow */
+  background-color: rgba(255, 255, 0, 0.15);
+  outline: 3px solid #ffaa00; /* Thicker outline */
 }
 
 .homePage__button.selected {
   background-color: #ffcc00;
   color: black;
   font-weight: bold;
-  outline: 2px solid #ffaa00;
+  outline: 3px solid #ffaa00; /* Thicker outline to match */
 }

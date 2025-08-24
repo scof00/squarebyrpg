@@ -1,14 +1,14 @@
 /* SceneDisplay.css */
 
 .scene-container {
-  width: 100vw;
-  height: 100vh;
+  width: 1920px;         /* Changed from 100vw to fixed width */
+  height: 1080px;        /* Changed from 100vh to fixed height */
   position: relative;
   background-color: black;
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  padding: 2rem;
+  padding: 32px;         /* 2rem converted to px */
   background-size: cover;
   background-position: center;
   box-sizing: border-box;
@@ -22,43 +22,52 @@
   background-color: rgba(0, 0, 0, 0.8);
   border: 2px solid #888;
   border-radius: 12px;
-  padding: 1rem 1.5rem;
+  padding: 16px 24px;    /* 1rem 1.5rem converted to px */
   box-sizing: border-box;
   position: relative;
-  font-size: 1.2rem;
+  font-size: 19px;       /* 1.2rem converted to px */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
-   border-style: outset;
+  border-style: outset;
   border-radius: 25px;
   border-color: #783f04;
   border-width: 5px;
   background-color: #E5DFCF;
+  color: #000;           /* Add explicit text color for readability */
 }
 
 .speaker-name {
   position: absolute;
-  top: -1.4rem;
-  left: 1rem;
-  padding: 0 0.6rem;
+  top: -22px;            /* -1.4rem converted to px */
+  left: 16px;            /* 1rem converted to px */
+  padding: 0 10px;       /* 0 0.6rem converted to px */
   font-weight: bold;
   border-radius: 6px 6px 0 0;
-  font-size: 1rem;
-   border-style: outset;
+  font-size: 16px;       /* 1rem converted to px */
+  border-style: outset;
   border-radius: 10px;
   border-color: #783f04;
   border-width: 5px;
   background-color: #E5DFCF;
+  color: #000;           /* Add explicit text color */
+  min-width: 80px;       /* Ensure minimum width for readability */
+  text-align: center;    /* Center the speaker name */
 }
 
 .dialogue-text {
   flex-grow: 1;
   white-space: pre-wrap;
   line-height: 1.4;
+  color: #000;           /* Ensure text is visible on light background */
+  margin-top: 8px;       /* Add some space from top edge */
 }
 
 .continue-hint {
-  font-size: 0.9rem;
+  font-size: 14px;       /* 0.9rem converted to px */
   text-align: right;
+  color: #555;           /* Slightly muted color for the hint */
+  font-style: italic;    /* Make the hint text italic */
+  margin-top: 8px;       /* Add some space above the hint */
 }
