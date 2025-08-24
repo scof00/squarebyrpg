@@ -15,10 +15,9 @@ export const difficulty = {
 export const room = {};
 
 export const itemType = {
-  ARMOR: "Armor",
-  WEAPON: "Weapon",
-  SCROLL: "Scroll",
-  BUFF: "Buff",
+  ATTACK: "Attack",
+  DEFENSE: "Defense",
+  HEALTH: "Health",
   CONSUMABLE: "Consumable",
 };
 

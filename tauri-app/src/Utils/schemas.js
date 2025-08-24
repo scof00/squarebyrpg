@@ -52,14 +52,9 @@ export const roomSchema = {
 export const itemSchema = {
   id: "string",
   name: "string",
-  art: "image",
-  description: "string",
-  effectType: "enum",
-  effectValue: "number",
-  chance: "number",
-  value: "number",
-  itemType: "enum",
-  rarity: "enum"
+  image: "string",
+  type: "string",
+  rarity: "string"
 };
 
 export const playersStart = [

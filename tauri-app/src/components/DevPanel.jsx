@@ -11,7 +11,13 @@ import {
   updateEnemy,
   deleteEnemy,
 } from "../Utils/enemyDB";
-import "../styles/devPanel.css"
+import {
+  createItem,
+  getAllItems,
+  updateItem,
+  deleteItem,
+} from "../Utils/itemDB";
+import "../styles/devPanel.css";
 import { useNavigate } from "react-router-dom";
 
 // Enum values for dropdown selects
@@ -30,8 +36,12 @@ const enemyTypeOptions = [
   "Smudge",
   "Bat",
   "Dragon",
-  "Knight"
+  "Knight",
 ];
+
+const rarityTypeOptions = ["Common", "Uncommon", "Rare", "Legendary"];
+
+const itemTypeOptions = ["Attack", "Defense", "Health", "Consumable"];
 
 // Schemas for fields and types per table
 const schemas = {
@@ -48,6 +58,13 @@ const schemas = {
     type: "enum", // enum dropdown
     image: "string",
   },
+
+  items: {
+    name: "string",
+    image: "string",
+    type: "enum",
+    rarity: "enum",
+  },
 };
 
 // CRUD function maps
@@ -63,6 +80,12 @@ const crudMap = {
     create: createEnemy,
     update: updateEnemy,
     delete: deleteEnemy,
+  },
+  items: {
+    getAll: getAllItems,
+    create: createItem,
+    update: updateItem,
+    delete: deleteItem,
   },
 };
 
@@ -139,12 +162,14 @@ export default function DevPanel() {
   // Render input based on type, with enum support
   function renderInput(key, type, value, onChange) {
     if (type === "enum") {
-      const options =
-        key === "difficulty"
-          ? difficultyOptions
-          : key === "type"
-          ? enemyTypeOptions
-          : [];
+      let options = [];
+      if (currentTable === "enemy") {
+        if (key === "difficulty") options = difficultyOptions;
+        if (key === "type") options = enemyTypeOptions;
+      } else if (currentTable === "items") {
+        if (key === "type") options = itemTypeOptions;
+        if (key === "rarity") options = rarityTypeOptions;
+      }
       return (
         <select
           className="devpanel-select"
@@ -224,7 +249,9 @@ export default function DevPanel() {
       {/* Add new form */}
       {showForm && (
         <div className="devpanel-form">
-          <h2 className="devpanel-form-title">New {currentTable.slice(0, -1)}</h2>
+          <h2 className="devpanel-form-title">
+            New {currentTable.slice(0, -1)}
+          </h2>
           {Object.entries(schemas[currentTable]).map(([key, type]) => (
             <div key={key} className="devpanel-form-group">
               <label className="devpanel-label">{key}</label>
@@ -253,7 +280,10 @@ export default function DevPanel() {
                     )}
                   </div>
                 ))}
-                <button onClick={handleUpdate} className="devpanel-save-btn mr-2">
+                <button
+                  onClick={handleUpdate}
+                  className="devpanel-save-btn mr-2"
+                >
                   Save
                 </button>
                 <button
@@ -265,7 +295,9 @@ export default function DevPanel() {
               </div>
             ) : (
               <div>
-                <pre className="devpanel-json">{JSON.stringify(item, null, 2)}</pre>
+                <pre className="devpanel-json">
+                  {JSON.stringify(item, null, 2)}
+                </pre>
                 <button
                   onClick={() => {
                     setEditingItem(item);

@@ -13,7 +13,6 @@ export const Home = () => {
   const buttons = [
     { label: "New Game", onClick: gameStart },
     { label: "Continue" },
-    { label: "Collection" },
     { label: "Options" },
     { label: "Combat", onClick: goToCombat },
     { label: "Dev Panel", onClick: goToDevPanel },

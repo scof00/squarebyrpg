@@ -44,5 +44,17 @@ export async function initDatabase() {
     )
     .then(console.log("✅ enemy table created"));
 
+    await dbInstance.execute(`
+    CREATE TABLE IF NOT EXISTS items (
+      id INTEGER PRIMARY KEY,
+      name TEXT NOT NULL,
+      image TEXT,
+      type TEXT NOT NULL CHECK(type IN ('Attack', 'Defense', 'Health', 'Consumable')),
+      rarity TEXT NOT NULL CHECK(rarity IN ('Common', 'Uncommon', 'Rare', 'Legendary'))
+    );
+  `
+    )
+    .then(console.log("✅ items table created"));
+
   return dbInstance;
 }

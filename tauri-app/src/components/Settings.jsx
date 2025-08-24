@@ -56,7 +56,6 @@ export function SettingsDisplay() {
                   <X size={24} />
                 </button>
                 <ul className="menu-options">
-                  <li><button>Collection</button></li>
                   <li><button>Settings</button></li>
                   <li><button onClick={() => handleConfirm("home")}>Return to Home</button></li>
                   <li><button onClick={() => handleConfirm("quit")}>Quit</button></li>
